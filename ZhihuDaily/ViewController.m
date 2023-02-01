@@ -24,6 +24,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    [Model getDatawithSuccess:^(NSArray * _Nonnull array) {
+        self.Array = array;
+        [self.tableView reloadData]; //刷新数据
+        } Failure:^{
+            NSLog(@"Error ");
+        }];
+    
     [self.view addSubview:self.sayhi];
     [self.view addSubview:self.monthView];
     [self.view addSubview:self.dayView];
@@ -49,13 +56,6 @@
             make.width.mas_equalTo(40);
             make.height.mas_equalTo(20);
     }];
-    [Model getDatawithSuccess:^(NSArray * _Nonnull array) {
-        self.Array = array;
-        NSLog(@"数组为%@",array);
-            
-        } Failure:^{
-            NSLog(@"Error ");
-        }];
     
 } //viewDidLoad结束位置
 
@@ -139,19 +139,16 @@
     return _tableView;
 }
 
-//对应tableView的组数
-//- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-//    return 1;
-//}
-//row的数量
+#pragma mark -Data Source
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    NSLog(@"条数%lu",_Array.count); //调试用
-    return self.Array.count; //应为self.Array.count
+    return self.Array.count;
 }
 //创建cell
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     UITableViewCell *cell = [[UITableViewCell alloc]init];
-    cell.backgroundColor = UIColor.redColor;
+    cell.backgroundColor = UIColor.brownColor;
+    Model *model = self.Array[indexPath.row];
+    cell.textLabel.text = model.title;
     return cell;
 }
 
