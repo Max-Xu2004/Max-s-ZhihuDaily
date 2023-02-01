@@ -6,6 +6,7 @@ target 'ZhihuDaily' do
   use_frameworks!
   pod 'AFNetworking'
   pod 'Masonry'
+  pod 'SDWebImage' 
 
   # Pods for ZhihuDaily
 

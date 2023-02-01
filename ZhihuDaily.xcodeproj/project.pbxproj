@@ -15,6 +15,7 @@
 		75CA1C3E298800A40085F701 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75CA1C3C298800A40085F701 /* LaunchScreen.storyboard */; };
 		75CA1C41298800A40085F701 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 75CA1C40298800A40085F701 /* main.m */; };
 		75CA1C492988D06A0085F701 /* Model.m in Sources */ = {isa = PBXBuildFile; fileRef = 75CA1C482988D06A0085F701 /* Model.m */; };
+		75CA1C55298A41CF0085F701 /* TableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 75CA1C54298A41CF0085F701 /* TableViewCell.m */; };
 		A5A3CB000E1EAC22AB72544C /* Pods_ZhihuDaily.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5347E5FC86C1E8E877BE0DAD /* Pods_ZhihuDaily.framework */; };
 /* End PBXBuildFile section */
 
@@ -35,6 +36,8 @@
 		75CA1C40298800A40085F701 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		75CA1C472988D06A0085F701 /* Model.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Model.h; sourceTree = "<group>"; };
 		75CA1C482988D06A0085F701 /* Model.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Model.m; sourceTree = "<group>"; };
+		75CA1C53298A41CF0085F701 /* TableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TableViewCell.h; sourceTree = "<group>"; };
+		75CA1C54298A41CF0085F701 /* TableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TableViewCell.m; sourceTree = "<group>"; };
 		E5E74A7C1D652F6E3F0BFE66 /* Pods-ZhihuDaily.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZhihuDaily.release.xcconfig"; path = "Target Support Files/Pods-ZhihuDaily/Pods-ZhihuDaily.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -85,6 +88,8 @@
 				75CA1C32298800A40085F701 /* SceneDelegate.m */,
 				75CA1C34298800A40085F701 /* ViewController.h */,
 				75CA1C35298800A40085F701 /* ViewController.m */,
+				75CA1C53298A41CF0085F701 /* TableViewCell.h */,
+				75CA1C54298A41CF0085F701 /* TableViewCell.m */,
 				75CA1C37298800A40085F701 /* Main.storyboard */,
 				75CA1C3A298800A40085F701 /* Assets.xcassets */,
 				75CA1C3C298800A40085F701 /* LaunchScreen.storyboard */,
@@ -220,6 +225,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				75CA1C36298800A40085F701 /* ViewController.m in Sources */,
+				75CA1C55298A41CF0085F701 /* TableViewCell.m in Sources */,
 				75CA1C30298800A40085F701 /* AppDelegate.m in Sources */,
 				75CA1C41298800A40085F701 /* main.m in Sources */,
 				75CA1C33298800A40085F701 /* SceneDelegate.m in Sources */,

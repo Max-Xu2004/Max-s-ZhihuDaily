@@ -14,7 +14,8 @@
     Model *model = [[Model alloc]init];
     model.title = dict[@"title"];
     model.hint = dict[@"hint"];
-    model.images = dict[@"images"];
+    model.imagesArray = dict[@"images"];
+    model.images = model.imagesArray[0];
     model.url = dict[@"url"];
     return model;
 }

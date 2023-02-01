@@ -6,6 +6,7 @@
 //
 
 #import "ViewController.h"
+#import "TableViewCell.h"
 #import "Masonry.h"
 #import "Model.h"
 
@@ -145,10 +146,12 @@
 }
 //创建cell
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    UITableViewCell *cell = [[UITableViewCell alloc]init];
-    cell.backgroundColor = UIColor.brownColor;
+    TableViewCell *cell = [[TableViewCell alloc]init];
+    
     Model *model = self.Array[indexPath.row];
-    cell.textLabel.text = model.title;
+    
+    cell.imgURL = model.images;
+    cell.title = model.title;
     return cell;
 }
 

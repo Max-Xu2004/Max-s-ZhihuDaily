@@ -4,7 +4,7 @@
 //
 //  Created by 许晋嘉 on 2023/1/31.
 //
-
+//这是最近新闻的模型
 #import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property(nonatomic,copy) NSString *title;
 @property(nonatomic,copy) NSString *hint;
+@property(nonatomic,copy) NSArray *imagesArray;
 @property(nonatomic,copy) NSString *images;
 @property(nonatomic,copy) NSString *url;
 
