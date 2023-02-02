@@ -15,6 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic,strong) NSString *title;
 
+@property (nonatomic,strong) NSString *hint;
+
 @end
 
 NS_ASSUME_NONNULL_END

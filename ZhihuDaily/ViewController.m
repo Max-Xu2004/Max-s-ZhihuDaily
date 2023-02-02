@@ -15,8 +15,9 @@
 @property (nonatomic,strong) UILabel *sayhi; //根据时间显示早上好，下午好，晚上好；
 @property (nonatomic,strong) UILabel *monthView; //当前月份显示
 @property (nonatomic,strong) UILabel *dayView;
-@property (nonatomic,strong) UITableView *tableView; //该TableView用来展示首页最近的新闻
+@property (nonatomic,strong) UITableView *tableView; //该TableView用来展示首页新闻
 @property (nonatomic,copy) NSArray *Array; //存放请求数据的数组
+@property (nonatomic,strong) WKWebView *webView; //用于浏览新闻网页
 
 @end
 
@@ -38,24 +39,31 @@
     [self.view addSubview:self.tableView];
     //设置问候语的位置
     [self.sayhi mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view).mas_offset(50);
-        make.left.equalTo(self.view).mas_offset(50);
+        make.top.equalTo(self.view).mas_offset(40);
+        make.left.equalTo(self.view).mas_offset(60);
         make.width.mas_equalTo(120);
         make.height.mas_equalTo(50);
     }];
     //设置月份显示的位置
     [self.monthView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view).mas_offset(70);
-        make.left.equalTo(self.view).mas_offset(10);
+        make.top.equalTo(self.view).mas_offset(65);
+        make.left.equalTo(self.view).mas_offset(20);
         make.width.mas_equalTo(40);
         make.height.mas_equalTo(20);
     }];
     //设置日期显示的位置
     [self.dayView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.view).mas_offset(50);
-            make.left.equalTo(self.view).mas_offset(10);
+            make.top.equalTo(self.view).mas_offset(45);
+            make.left.equalTo(self.view).mas_offset(28);
             make.width.mas_equalTo(40);
             make.height.mas_equalTo(20);
+    }];
+    //设置tableView的相对位置
+    [_tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.top.equalTo(self.view).mas_offset(100);
+        make.bottom.equalTo(self.view).mas_offset(0);
+        make.left.equalTo(self.view).mas_offset(0);
+        make.right.equalTo(self.view).mas_offset(0);
     }];
     
 } //viewDidLoad结束位置
@@ -71,11 +79,12 @@
 //        long minute = [calendar component:NSCalendarUnitMinute fromDate:[NSDate date]];
         NSLog(@"%ld",hour);
        //从这里开始为根据时间对问候文本的判定
-        if(hour>=0&&hour<6) _sayhi.text = @"凌晨好！";
-        else if (hour>=6&&hour<12) _sayhi.text = @"早上好！";
-        else if (hour==12) _sayhi.text = @"中午好！";
-        else if (hour>12&&hour<18) _sayhi.text = @"下午好！";
-        else if (hour>=18) _sayhi.text = @"晚上好";
+        if(hour>=0&&hour<6) _sayhi.text = @"早点休息";
+        else if (hour>=6&&hour<12) _sayhi.text = @"知乎日报";
+        else if (hour==12) _sayhi.text = @"知乎日报";
+        else if (hour>12&&hour<18) _sayhi.text = @"知乎日报";
+        else if (hour>=18&&hour<23) _sayhi.text = @"晚上好！";
+        else if (hour>=23) _sayhi.text = @"早点休息";
         //判定结束
         NSLog(@"%@",_sayhi.text);
         
@@ -127,7 +136,8 @@
 -(UITableView *)tableView{
     if(_tableView == nil){
         _tableView = [[UITableView alloc]init];
-        _tableView.frame = CGRectMake(0, 100, 400, 500);//临时调试的位置
+//        _tableView.frame = CGRectMake(0, 100, 400, 500);//临时调试的位置
+        
         _tableView.delegate = self;
         _tableView.dataSource = self;
         _tableView.estimatedSectionHeaderHeight = 0;
@@ -140,7 +150,7 @@
     return _tableView;
 }
 
-#pragma mark -Data Source
+#pragma mark -tableViewDataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return self.Array.count;
 }
@@ -152,7 +162,19 @@
     
     cell.imgURL = model.images;
     cell.title = model.title;
+    cell.hint = model.hint;
+    
     return cell;
+}
+
+#pragma mark -tableViewDelegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    Model *model = self.Array[indexPath.row];
+    NSLog(@"对应的新闻链接为%@",model.url);
+    NSLog(@"单击了第%ld条信息",indexPath.row);
+    
+    
 }
 
 @end
