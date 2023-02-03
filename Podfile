@@ -7,6 +7,7 @@ target 'ZhihuDaily' do
   pod 'AFNetworking'
   pod 'Masonry'
   pod 'SDWebImage' 
+  pod 'MJRefresh'
 
   # Pods for ZhihuDaily
 

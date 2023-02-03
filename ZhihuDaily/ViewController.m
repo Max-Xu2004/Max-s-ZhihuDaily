@@ -10,7 +10,8 @@
 #import "Masonry.h"
 #import "Model.h"
 #import "NewsViewController.h"
-#include "SessionManager.h"
+#import "SessionManager.h"
+#import "MJRefresh.h"
 
 @interface ViewController () <UITableViewDelegate,UITableViewDataSource>
 
@@ -18,7 +19,7 @@
 @property (nonatomic,strong) UILabel *monthView; //当前月份显示
 @property (nonatomic,strong) UILabel *dayView;
 @property (nonatomic,strong) UITableView *tableView; //该TableView用来展示首页新闻
-@property (nonatomic,copy) NSArray *Array; //存放请求数据的数组
+@property (nonatomic,copy) NSMutableArray *Array; //存放请求数据的数组
 @property (nonatomic,strong) WKWebView *webView; //用于浏览新闻网页
 
 @end
@@ -28,13 +29,17 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-   
+
     [SessionManager getDatawithapiURL:@"https://news-at.zhihu.com/api/3/stories/before/20230202" Success:^(NSArray * _Nonnull array) {
-            self.Array = array;
+        self.Array = [[NSMutableArray alloc]initWithArray:array];
+        
                     [self.tableView reloadData]; //刷新数据
+        NSLog(@"数组内容为%@",self.Array);
         } Failure:^{
             NSLog(@"Error ");
         }];
+    
+//
     
 
     [self.view addSubview:self.sayhi];
@@ -147,11 +152,13 @@
         
         _tableView.delegate = self;
         _tableView.dataSource = self;
-        _tableView.estimatedSectionHeaderHeight = 0;
+        _tableView.estimatedSectionHeaderHeight = 100;
         _tableView.estimatedSectionFooterHeight = 0;
         _tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
         _tableView.showsVerticalScrollIndicator = NO;
         _tableView.backgroundColor = UIColor.orangeColor; //仅用于调试
+        self.tableView.footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(viewRefresh)];
+
         
     }
     return _tableView;
@@ -159,7 +166,7 @@
 
 #pragma mark -tableViewDataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 6;
+    return self.Array.count;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
@@ -188,6 +195,18 @@
     NewsViewController *newsVC = [[NewsViewController alloc]init];
     newsVC.newsURL = model.url;
     [self presentViewController:newsVC animated:YES completion:nil];
+}
+
+#pragma mark - 新闻列表刷新
+- (void)viewRefresh{
+    [SessionManager getDatawithapiURL:@"https://news-at.zhihu.com/api/3/stories/before/20230201" Success:^(NSArray * _Nonnull array) {
+        self.Array = [[self.Array arrayByAddingObjectsFromArray:array] mutableCopy];
+        
+                    [self.tableView reloadData]; //刷新数据
+        NSLog(@"数组内容为%@",self.Array);
+        } Failure:^{
+            NSLog(@"Error ");
+        }];
 }
 
 @end

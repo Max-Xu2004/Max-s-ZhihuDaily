@@ -12,7 +12,7 @@
 
 NSString *api;
 
-//apiURL为请求数据的api链接
+
 +(void)getDatawithapiURL:(NSString *)api
                    Success:(void(^)(NSArray *array))success
                    Failure:(void(^)(void)) failure{
