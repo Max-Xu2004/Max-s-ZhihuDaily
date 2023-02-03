@@ -10,6 +10,7 @@
 #import "Masonry.h"
 #import "Model.h"
 #import "NewsViewController.h"
+#include "SessionManager.h"
 
 @interface ViewController () <UITableViewDelegate,UITableViewDataSource>
 
@@ -28,14 +29,14 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
    
-    
-    [Model getDatawithSuccess:^(NSArray * _Nonnull array) {
-        self.Array = array;
-        [self.tableView reloadData]; //刷新数据
+    [SessionManager getDatawithapiURL:@"https://news-at.zhihu.com/api/3/stories/before/20230202" Success:^(NSArray * _Nonnull array) {
+            self.Array = array;
+                    [self.tableView reloadData]; //刷新数据
         } Failure:^{
             NSLog(@"Error ");
         }];
     
+
     [self.view addSubview:self.sayhi];
     [self.view addSubview:self.monthView];
     [self.view addSubview:self.dayView];
@@ -158,8 +159,13 @@
 
 #pragma mark -tableViewDataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return self.Array.count;
+    return 6;
 }
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    return self.Array.count/6;
+}
+
 //创建cell
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     TableViewCell *cell = [[TableViewCell alloc]init];

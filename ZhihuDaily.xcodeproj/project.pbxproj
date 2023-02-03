@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7535FA00298CB73D0032B4DD /* SessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7535F9FF298CB73D0032B4DD /* SessionManager.m */; };
 		75CA1C30298800A40085F701 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 75CA1C2F298800A40085F701 /* AppDelegate.m */; };
 		75CA1C33298800A40085F701 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 75CA1C32298800A40085F701 /* SceneDelegate.m */; };
 		75CA1C36298800A40085F701 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 75CA1C35298800A40085F701 /* ViewController.m */; };
@@ -23,6 +24,8 @@
 /* Begin PBXFileReference section */
 		5347E5FC86C1E8E877BE0DAD /* Pods_ZhihuDaily.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ZhihuDaily.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		54272A8FFA84EA727F2525CC /* Pods-ZhihuDaily.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZhihuDaily.debug.xcconfig"; path = "Target Support Files/Pods-ZhihuDaily/Pods-ZhihuDaily.debug.xcconfig"; sourceTree = "<group>"; };
+		7535F9FE298CB73D0032B4DD /* SessionManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SessionManager.h; sourceTree = "<group>"; };
+		7535F9FF298CB73D0032B4DD /* SessionManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SessionManager.m; sourceTree = "<group>"; };
 		75CA1C2B298800A40085F701 /* ZhihuDaily.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZhihuDaily.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		75CA1C2E298800A40085F701 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		75CA1C2F298800A40085F701 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -102,6 +105,8 @@
 				75CA1C40298800A40085F701 /* main.m */,
 				75CA1C472988D06A0085F701 /* Model.h */,
 				75CA1C482988D06A0085F701 /* Model.m */,
+				7535F9FE298CB73D0032B4DD /* SessionManager.h */,
+				7535F9FF298CB73D0032B4DD /* SessionManager.m */,
 			);
 			path = ZhihuDaily;
 			sourceTree = "<group>";
@@ -231,6 +236,7 @@
 			files = (
 				75CA1C36298800A40085F701 /* ViewController.m in Sources */,
 				75CA1C55298A41CF0085F701 /* TableViewCell.m in Sources */,
+				7535FA00298CB73D0032B4DD /* SessionManager.m in Sources */,
 				75CA1C30298800A40085F701 /* AppDelegate.m in Sources */,
 				75CA1C41298800A40085F701 /* main.m in Sources */,
 				75CA1C33298800A40085F701 /* SceneDelegate.m in Sources */,

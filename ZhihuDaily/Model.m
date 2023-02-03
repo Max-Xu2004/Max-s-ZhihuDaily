@@ -8,7 +8,14 @@
 #import "Model.h"
 #import "AFHTTPSessionManager.h"
 
+//@interface Model ()
+//
+//@property (nonatomic,strong) NSString *api;
+//
+//@end
+
 @implementation Model
+
 
 +(instancetype)DataWithDict:(NSDictionary *)dict{
     Model *model = [[Model alloc]init];
@@ -20,17 +27,4 @@
     return model;
 }
 
-+ (void)getDatawithSuccess:(void (^)(NSArray * _Nonnull))success Failure:(void (^)(void))failure{
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    [manager GET:@"https://news-at.zhihu.com/api/3/stories/before/20230203" parameters:nil headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        NSMutableArray *mArray = [NSMutableArray array];
-        for(NSDictionary *dict in responseObject[@"stories"]){
-            Model *model = [Model DataWithDict:dict];
-            [mArray addObject:model];
-        }
-        if(success) success(mArray.copy); 
-        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        
-        }];
-}
 @end
