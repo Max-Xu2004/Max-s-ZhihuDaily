@@ -9,6 +9,7 @@
 #import "TableViewCell.h"
 #import "Masonry.h"
 #import "Model.h"
+#import "NewsViewController.h"
 
 @interface ViewController () <UITableViewDelegate,UITableViewDataSource>
 
@@ -26,6 +27,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+   
+    
     [Model getDatawithSuccess:^(NSArray * _Nonnull array) {
         self.Array = array;
         [self.tableView reloadData]; //刷新数据
@@ -76,6 +79,9 @@
         _sayhi.font = [UIFont systemFontOfSize:25];
         NSCalendar *calendar = [NSCalendar currentCalendar];
         long hour = [calendar component:NSCalendarUnitHour fromDate:[NSDate date]];
+        
+        
+        
 //        long minute = [calendar component:NSCalendarUnitMinute fromDate:[NSDate date]];
         NSLog(@"%ld",hour);
        //从这里开始为根据时间对问候文本的判定
@@ -173,8 +179,9 @@
     Model *model = self.Array[indexPath.row];
     NSLog(@"对应的新闻链接为%@",model.url);
     NSLog(@"单击了第%ld条信息",indexPath.row);
-    
-    
+    NewsViewController *newsVC = [[NewsViewController alloc]init];
+    newsVC.newsURL = model.url;
+    [self presentViewController:newsVC animated:YES completion:nil];
 }
 
 @end

@@ -22,7 +22,7 @@
 
 + (void)getDatawithSuccess:(void (^)(NSArray * _Nonnull))success Failure:(void (^)(void))failure{
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    [manager GET:@"https://news-at.zhihu.com/api/3/news/latest" parameters:nil headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manager GET:@"https://news-at.zhihu.com/api/3/stories/before/20230203" parameters:nil headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSMutableArray *mArray = [NSMutableArray array];
         for(NSDictionary *dict in responseObject[@"stories"]){
             Model *model = [Model DataWithDict:dict];

@@ -6,6 +6,8 @@
 //
 
 #import "AppDelegate.h"
+#import "ViewController.h"
+#import "NewsViewController.h"
 
 @interface AppDelegate ()
 
@@ -16,6 +18,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+//    ViewController *homeVC = [[ViewController alloc]init];
+    
     return YES;
 }
 
