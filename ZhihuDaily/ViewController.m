@@ -19,8 +19,14 @@
 @property (nonatomic,strong) UILabel *monthView; //当前月份显示
 @property (nonatomic,strong) UILabel *dayView;
 @property (nonatomic,strong) UITableView *tableView; //该TableView用来展示首页新闻
-@property (nonatomic,copy) NSMutableArray *Array; //存放请求数据的数组
+@property (nonatomic,strong) NSMutableArray<NSArray *> *newsArray; //存放请求数据的数组
 @property (nonatomic,strong) WKWebView *webView; //用于浏览新闻网页
+@property (nonatomic,strong) NSDate *date; //用于存放当前日期
+@property (nonatomic,assign) NSInteger counter; //计数器，用来计算请求历史数据的次数
+@property (nonatomic,assign) NSTimeInterval oneDay; //为一天有多少秒，便于计算前后日期，获取历史新闻
+@property (nonatomic,strong) NSDateFormatter *formatter; //8位数日期格式
+@property (nonatomic,strong) NSLock *lock;
+
 
 @end
 
@@ -30,11 +36,23 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
 
-    [SessionManager getDatawithapiURL:@"https://news-at.zhihu.com/api/3/stories/before/20230202" Success:^(NSArray * _Nonnull array) {
-        self.Array = [[NSMutableArray alloc]initWithArray:array];
+    self.lock = [[NSLock alloc]init];
+    self.formatter = [[NSDateFormatter alloc] init];
+    self.formatter.dateFormat = @"yyyyMMdd";
+    self.counter = 0;
+    self.oneDay = 86400; //
+    self.date = [[NSDate alloc]init];
+    self.date = [NSDate date]; //初始化日期计算有关变量
+
+    
+    
+    self.newsArray = [[NSMutableArray alloc]init]; //
+    [SessionManager getDatawithapiURL:@"https://news-at.zhihu.com/api/3/news/latest" Success:^(NSArray * _Nonnull array) {
+        NSLog(@"aaa%@",self.newsArray);
+        [self.newsArray addObject:array];
         
                     [self.tableView reloadData]; //刷新数据
-        NSLog(@"数组内容为%@",self.Array);
+        NSLog(@"数组内容为%@",self.newsArray);
         } Failure:^{
             NSLog(@"Error ");
         }];
@@ -107,6 +125,12 @@
 }
 
 -(UILabel *)monthView{
+    
+//    NSDate *a;
+//    NSCalendar *b;
+//    NSDateFormatter *c;
+//    NSDateComponents *d;
+    
     if(_monthView == nil){
         _monthView = [[UILabel alloc]init];
         _monthView.font = [UIFont systemFontOfSize:18];
@@ -166,18 +190,18 @@
 
 #pragma mark -tableViewDataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return self.Array.count;
+    return self.newsArray[section].count;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return self.Array.count/6;
+    return self.newsArray.count;
 }
 
 //创建cell
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     TableViewCell *cell = [[TableViewCell alloc]init];
     
-    Model *model = self.Array[indexPath.row];
+    Model *model = self.newsArray[indexPath.section][indexPath.row];
     
     cell.imgURL = model.images;
     cell.title = model.title;
@@ -189,7 +213,7 @@
 #pragma mark -tableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    Model *model = self.Array[indexPath.row];
+    Model *model = self.newsArray[indexPath.section][indexPath.row];
     NSLog(@"对应的新闻链接为%@",model.url);
     NSLog(@"单击了第%ld条信息",indexPath.row);
     NewsViewController *newsVC = [[NewsViewController alloc]init];
@@ -199,14 +223,38 @@
 
 #pragma mark - 新闻列表刷新
 - (void)viewRefresh{
-    [SessionManager getDatawithapiURL:@"https://news-at.zhihu.com/api/3/stories/before/20230201" Success:^(NSArray * _Nonnull array) {
-        self.Array = [[self.Array arrayByAddingObjectsFromArray:array] mutableCopy];
+
+    [self.lock lock];
+    
+    NSDate *theDate = [[NSDate alloc]init];
+    theDate = [self.date initWithTimeIntervalSinceNow:self.oneDay*self.counter*-1];
+    NSString *dateString = [self.formatter stringFromDate:theDate];
+    NSLog(@"日期%@",dateString);
+    self.counter++;
+    NSString *apiPrefix = @"https://news-at.zhihu.com/api/3/stories/before/";
+    NSString *apiString = [apiPrefix stringByAppendingString:dateString];
+    
+    
+    [SessionManager getDatawithapiURL:apiString Success:^(NSArray * _Nonnull array) {
+        NSLog(@"aaa%@",self.newsArray);
+        [self.newsArray addObject:array];
         
                     [self.tableView reloadData]; //刷新数据
-        NSLog(@"数组内容为%@",self.Array);
+        NSLog(@"数组内容为%@",self.newsArray);
+        [self.tableView beginUpdates];
+        [self.tableView reloadData]; //刷新数据
+        [self.tableView endUpdates];
+        self.tableView.footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(viewRefresh)];
+        [self.lock unlock];
         } Failure:^{
             NSLog(@"Error ");
         }];
+    
+    
+
 }
 
+
+
 @end
+    
