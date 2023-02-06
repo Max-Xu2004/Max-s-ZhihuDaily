@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		7535FA00298CB73D0032B4DD /* SessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7535F9FF298CB73D0032B4DD /* SessionManager.m */; };
+		75401DFA298F4E1D005C3F73 /* TableViewHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 75401DF9298F4E1D005C3F73 /* TableViewHeaderView.m */; };
 		75CA1C30298800A40085F701 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 75CA1C2F298800A40085F701 /* AppDelegate.m */; };
 		75CA1C33298800A40085F701 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 75CA1C32298800A40085F701 /* SceneDelegate.m */; };
 		75CA1C36298800A40085F701 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 75CA1C35298800A40085F701 /* ViewController.m */; };
@@ -26,6 +27,8 @@
 		54272A8FFA84EA727F2525CC /* Pods-ZhihuDaily.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZhihuDaily.debug.xcconfig"; path = "Target Support Files/Pods-ZhihuDaily/Pods-ZhihuDaily.debug.xcconfig"; sourceTree = "<group>"; };
 		7535F9FE298CB73D0032B4DD /* SessionManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SessionManager.h; sourceTree = "<group>"; };
 		7535F9FF298CB73D0032B4DD /* SessionManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SessionManager.m; sourceTree = "<group>"; };
+		75401DF8298F4E1D005C3F73 /* TableViewHeaderView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TableViewHeaderView.h; sourceTree = "<group>"; };
+		75401DF9298F4E1D005C3F73 /* TableViewHeaderView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TableViewHeaderView.m; sourceTree = "<group>"; };
 		75CA1C2B298800A40085F701 /* ZhihuDaily.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZhihuDaily.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		75CA1C2E298800A40085F701 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		75CA1C2F298800A40085F701 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -98,6 +101,8 @@
 				75CA1C82298BA21A0085F701 /* NewsViewController.m */,
 				75CA1C53298A41CF0085F701 /* TableViewCell.h */,
 				75CA1C54298A41CF0085F701 /* TableViewCell.m */,
+				75401DF8298F4E1D005C3F73 /* TableViewHeaderView.h */,
+				75401DF9298F4E1D005C3F73 /* TableViewHeaderView.m */,
 				75CA1C37298800A40085F701 /* Main.storyboard */,
 				75CA1C3A298800A40085F701 /* Assets.xcassets */,
 				75CA1C3C298800A40085F701 /* LaunchScreen.storyboard */,
@@ -234,6 +239,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				75401DFA298F4E1D005C3F73 /* TableViewHeaderView.m in Sources */,
 				75CA1C36298800A40085F701 /* ViewController.m in Sources */,
 				75CA1C55298A41CF0085F701 /* TableViewCell.m in Sources */,
 				7535FA00298CB73D0032B4DD /* SessionManager.m in Sources */,

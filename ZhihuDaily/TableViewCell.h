@@ -9,6 +9,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+//复用标志
+UIKIT_EXTERN NSString *TableViewCellReuseIdentifier;
+
 @interface TableViewCell : UITableViewCell
 
 @property (nonatomic,copy) NSString *imgURL;

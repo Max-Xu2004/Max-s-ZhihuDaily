@@ -12,6 +12,7 @@
 #import "NewsViewController.h"
 #import "SessionManager.h"
 #import "MJRefresh.h"
+#import "TableViewHeaderView.h"
 
 @interface ViewController () <UITableViewDelegate,UITableViewDataSource>
 
@@ -25,7 +26,8 @@
 @property (nonatomic,assign) NSInteger counter; //计数器，用来计算请求历史数据的次数
 @property (nonatomic,assign) NSTimeInterval oneDay; //为一天有多少秒，便于计算前后日期，获取历史新闻
 @property (nonatomic,strong) NSDateFormatter *formatter; //8位数日期格式
-@property (nonatomic,strong) NSLock *lock;
+@property (nonatomic,strong) NSDateFormatter *formatter2; //"x月x日"格式
+@property (nonatomic,strong) NSLock *lock; //使用nslock使进程优先请求，避免重复请求导致历史新闻排序混乱
 
 
 @end
@@ -39,6 +41,8 @@
     self.lock = [[NSLock alloc]init];
     self.formatter = [[NSDateFormatter alloc] init];
     self.formatter.dateFormat = @"yyyyMMdd";
+    self.formatter2 = [[NSDateFormatter alloc] init];
+    self.formatter2.dateFormat = @"MM月dd日";
     self.counter = 0;
     self.oneDay = 86400; //
     self.date = [[NSDate alloc]init];
@@ -173,14 +177,22 @@
     if(_tableView == nil){
         _tableView = [[UITableView alloc]init];
 //        _tableView.frame = CGRectMake(0, 100, 400, 500);//临时调试的位置
+        self.tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
         
         _tableView.delegate = self;
         _tableView.dataSource = self;
-        _tableView.estimatedSectionHeaderHeight = 100;
+        _tableView.estimatedSectionHeaderHeight = 0;
         _tableView.estimatedSectionFooterHeight = 0;
         _tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
         _tableView.showsVerticalScrollIndicator = NO;
-        _tableView.backgroundColor = UIColor.orangeColor; //仅用于调试
+        _tableView.showsVerticalScrollIndicator = NO;
+        _tableView.backgroundColor = UIColor.whiteColor; //设置白色背景
+        self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone; //取消分割线
+
+        
+        [_tableView registerClass:TableViewCell.class forCellReuseIdentifier:TableViewCellReuseIdentifier];
+        [_tableView registerClass:TableViewHeaderView.class forHeaderFooterViewReuseIdentifier:TableViewHeaderViewReuseIdentifier];
+        
         self.tableView.footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(viewRefresh)];
 
         
@@ -199,7 +211,8 @@
 
 //创建cell
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    TableViewCell *cell = [[TableViewCell alloc]init];
+//    TableViewCell *cell = [[TableViewCell alloc]init];
+    TableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:TableViewCellReuseIdentifier forIndexPath:indexPath];
     
     Model *model = self.newsArray[indexPath.section][indexPath.row];
     
@@ -252,6 +265,41 @@
     
     
 
+}
+
+// Variable height support
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 20;
+}
+
+//- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+//    return 50;
+//}
+//
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    return 0;
+}
+
+// Section header & footer information.
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    TableViewHeaderView *headerView = [tableView dequeueReusableHeaderFooterViewWithIdentifier:TableViewCellReuseIdentifier];
+    if (headerView == nil) {
+        headerView = [[TableViewHeaderView alloc] initWithReuseIdentifier:TableViewCellReuseIdentifier];
+    }
+    
+//    headerView.count = self._getAry[section].count;
+//    headerView.imgName = self._getAry[section][arc4random() % self._getAry.count];
+//    NSDate *theDate = [[NSDate alloc]init];
+//    theDate = [self.date initWithTimeIntervalSinceNow:self.oneDay*section*-1];
+//    NSString *dateString = [self.formatter2 stringFromDate:theDate];
+    headerView.date = [self.formatter2 stringFromDate:[self.date initWithTimeIntervalSinceNow:self.oneDay*section*-1]];
+    NSLog(@"显示日期为%@",headerView.date);
+
+    
+    
+    return headerView;
 }
 
 

@@ -9,6 +9,8 @@
 #import "UIimageView+WebCache.h"
 #import "Masonry.h"
 
+NSString *TableViewCellReuseIdentifier = @"TableViewCell";
+
 #pragma mark - TableViewCell ()
 
 @interface TableViewCell ()
@@ -21,16 +23,15 @@
 
 @implementation TableViewCell
 
-- (instancetype)initWithFrame:(CGRect)frame{
-    self = [super initWithFrame:frame];
-    if(self){
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if (self) {
         [self.contentView addSubview:self.imgView];
         [self.contentView addSubview:self.titleLab];
         [self.contentView addSubview:self.hintLab];
     }
     return self;
 }
-
 #pragma mark - 设置大小
 - (void)layoutIfNeeded{
 //    CGFloat space = 2;
