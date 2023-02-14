@@ -23,7 +23,6 @@ NSString *api;
             Model *model = [Model DataWithDict:dict];
             [mArray addObject:model];
         }
-        NSLog(@"bbb%@",mArray);
         if(success) success(mArray.copy);
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         

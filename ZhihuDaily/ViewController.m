@@ -9,18 +9,26 @@
 #import "TableViewCell.h"
 #import "Masonry.h"
 #import "Model.h"
+#import "BannerModel.h"
 #import "NewsViewController.h"
 #import "SessionManager.h"
 #import "MJRefresh.h"
 #import "TableViewHeaderView.h"
+#import "CollectionViewCell.h"
+#import "BannerSessionManager.h"
 
-@interface ViewController () <UITableViewDelegate,UITableViewDataSource>
+@interface ViewController () <UITableViewDelegate,
+UITableViewDataSource,
+UICollectionViewDelegate,
+UICollectionViewDataSource,
+UICollectionViewDelegateFlowLayout>
 
 @property (nonatomic,strong) UILabel *sayhi; //根据时间显示早上好，下午好，晚上好；
 @property (nonatomic,strong) UILabel *monthView; //当前月份显示
 @property (nonatomic,strong) UILabel *dayView;
 @property (nonatomic,strong) UITableView *tableView; //该TableView用来展示首页新闻
 @property (nonatomic,strong) NSMutableArray<NSArray *> *newsArray; //存放请求数据的数组
+@property (nonatomic,strong) NSArray *bannerArray; //用来存放前五天的新闻数据生成banner
 @property (nonatomic,strong) WKWebView *webView; //用于浏览新闻网页
 @property (nonatomic,strong) NSDate *date; //用于存放当前日期
 @property (nonatomic,assign) NSInteger counter; //计数器，用来计算请求历史数据的次数
@@ -28,6 +36,7 @@
 @property (nonatomic,strong) NSDateFormatter *formatter; //8位数日期格式
 @property (nonatomic,strong) NSDateFormatter *formatter2; //"x月x日"格式
 @property (nonatomic,strong) NSLock *lock; //使用nslock使进程优先请求，避免重复请求导致历史新闻排序混乱
+@property (nonatomic,strong) UICollectionView *collectionView;
 
 
 @end
@@ -49,20 +58,27 @@
     self.date = [NSDate date]; //初始化日期计算有关变量
 
     
-    
+///获取首页内容
     self.newsArray = [[NSMutableArray alloc]init]; //
     [SessionManager getDatawithapiURL:@"https://news-at.zhihu.com/api/3/news/latest" Success:^(NSArray * _Nonnull array) {
-        NSLog(@"aaa%@",self.newsArray);
         [self.newsArray addObject:array];
-        
-                    [self.tableView reloadData]; //刷新数据
-        NSLog(@"数组内容为%@",self.newsArray);
+        [self.tableView reloadData]; //刷新数据
         } Failure:^{
             NSLog(@"Error ");
         }];
     
+///获取banner内容
+    [BannerSessionManager getBannerDatawithSuccess:^(NSArray * _Nonnull array) {
+        self.bannerArray = array;
+            [self.collectionView reloadData];
+        } Failure:^{
+            NSLog(@"Error");
+        }];
+    
+
 //
     
+
 
     [self.view addSubview:self.sayhi];
     [self.view addSubview:self.monthView];
@@ -85,7 +101,7 @@
     //设置日期显示的位置
     [self.dayView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.view).mas_offset(45);
-            make.left.equalTo(self.view).mas_offset(28);
+            make.left.equalTo(self.view).mas_offset(22);
             make.width.mas_equalTo(40);
             make.height.mas_equalTo(20);
     }];
@@ -193,11 +209,32 @@
         [_tableView registerClass:TableViewCell.class forCellReuseIdentifier:TableViewCellReuseIdentifier];
         [_tableView registerClass:TableViewHeaderView.class forHeaderFooterViewReuseIdentifier:TableViewHeaderViewReuseIdentifier];
         
+        self.tableView.tableHeaderView = self.collectionView;
+        
         self.tableView.footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(viewRefresh)];
 
         
     }
     return _tableView;
+}
+
+- (UICollectionView *)collectionView{
+    if(_collectionView == nil){
+        UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
+        layout.minimumLineSpacing = 0;
+        layout.minimumInteritemSpacing = 0;
+        layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+        
+        CGFloat space = 10;
+        CGFloat width = self.view.frame.size.width - 2 * space;
+        _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(space, 100, width, width) collectionViewLayout:layout];
+        _collectionView.delegate = self;
+        _collectionView.dataSource = self;
+        _collectionView.pagingEnabled = YES;
+        _collectionView.showsHorizontalScrollIndicator = NO;
+        [_collectionView registerClass:CollectionViewCell.class forCellWithReuseIdentifier:CollectionViewCellReuseIdentifier];
+    }
+    return _collectionView;
 }
 
 #pragma mark -tableViewDataSource
@@ -227,11 +264,13 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     Model *model = self.newsArray[indexPath.section][indexPath.row];
-    NSLog(@"对应的新闻链接为%@",model.url);
-    NSLog(@"单击了第%ld条信息",indexPath.row);
     NewsViewController *newsVC = [[NewsViewController alloc]init];
     newsVC.newsURL = model.url;
+    newsVC.modalPresentationStyle = 0;
+    newsVC.modalTransitionStyle = 1;
     [self presentViewController:newsVC animated:YES completion:nil];
+    
+    
 }
 
 #pragma mark - 新闻列表刷新
@@ -289,11 +328,6 @@
         headerView = [[TableViewHeaderView alloc] initWithReuseIdentifier:TableViewCellReuseIdentifier];
     }
     
-//    headerView.count = self._getAry[section].count;
-//    headerView.imgName = self._getAry[section][arc4random() % self._getAry.count];
-//    NSDate *theDate = [[NSDate alloc]init];
-//    theDate = [self.date initWithTimeIntervalSinceNow:self.oneDay*section*-1];
-//    NSString *dateString = [self.formatter2 stringFromDate:theDate];
     headerView.date = [self.formatter2 stringFromDate:[self.date initWithTimeIntervalSinceNow:self.oneDay*section*-1]];
     NSLog(@"显示日期为%@",headerView.date);
 
@@ -301,6 +335,41 @@
     
     return headerView;
 }
+
+#pragma mark - UICollectionViewDataSource
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
+    return 5;
+}
+
+- (__kindof UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
+    CollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:CollectionViewCellReuseIdentifier forIndexPath:indexPath];
+    
+    BannerModel *bModel = self.bannerArray[indexPath.row];
+    
+    cell.imgLink = bModel.image;
+    cell.titleText = bModel.title;
+    cell.hintText = bModel.hint;
+    return cell;
+}
+
+#pragma mark - UICollectionViewDelegate
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
+    BannerModel *bModel = self.bannerArray[indexPath.row];
+    NewsViewController *newsVC = [[NewsViewController alloc]init];
+    newsVC.newsURL = bModel.url;
+    newsVC.modalPresentationStyle = 0;
+    newsVC.modalTransitionStyle = 1;
+    [self presentViewController:newsVC animated:YES completion:nil];
+}
+
+
+#pragma mark - UICollectionViewDelegateFlowLayout
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
+    return collectionView.frame.size;
+}
+
 
 
 

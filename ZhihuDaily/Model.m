@@ -24,6 +24,7 @@
     model.imagesArray = dict[@"images"];
     model.images = model.imagesArray[0];
     model.url = dict[@"url"];
+    model.idNum = dict[@"id"];
     return model;
 }
 

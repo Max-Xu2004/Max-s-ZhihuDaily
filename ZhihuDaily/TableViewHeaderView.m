@@ -30,7 +30,7 @@ NSString *TableViewHeaderViewReuseIdentifier = @"TableViewHeaderView";
 }
 
 - (void)updateConfigurationUsingState:(UIViewConfigurationState *)state {
-    self.titleLab.frame = CGRectMake(10, -8, 70, 30);
+    self.titleLab.frame = CGRectMake(15, -8, 70, 30);
     self.titleLab.backgroundColor = UIColor.whiteColor;
 }
 
@@ -51,8 +51,4 @@ NSString *TableViewHeaderViewReuseIdentifier = @"TableViewHeaderView";
     _date = date;
     self.titleLab.text = self.date;
 }
-//- (void)setdateShow:(NSString *)dateShow {
-//    _date = dateShow;
-//    self.titleLab.text = @"1";
-//}
 @end

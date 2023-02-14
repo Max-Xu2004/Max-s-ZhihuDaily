@@ -34,19 +34,13 @@ NSString *TableViewCellReuseIdentifier = @"TableViewCell";
 }
 #pragma mark - 设置大小
 - (void)layoutIfNeeded{
-//    CGFloat space = 2;
-//    CGFloat side = self.contentView.frame.size.height- 2 * space;
-//    self.imgView.frame = CGRectMake(space, space, side, side);
-//    self.titleLab.frame = CGRectMake(2 * space + side, space, 300, 40); //测试数据
-//    [self.imageView mas_makeConstraints:^(MASConstraintMaker *make) {
-//            make.top.equalTo
-//    }];
+
 
 //设置新闻图片位置
     [self.imgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.contentView).mas_offset(10);
         make.bottom.equalTo(self.contentView).mas_offset(-10);
-        make.right.equalTo(self.contentView).mas_offset(-10);
+        make.right.equalTo(self.contentView).mas_offset(-15);
         make.width.mas_equalTo(70);
         make.height.mas_equalTo(70);
     }];
@@ -54,13 +48,13 @@ NSString *TableViewCellReuseIdentifier = @"TableViewCell";
     [self.titleLab mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.contentView).mas_offset(10);
         make.bottom.equalTo(self.hintLab).mas_offset(-20);
-        make.left.equalTo(self.contentView).mas_offset(18);
+        make.left.equalTo(self.contentView).mas_offset(15);
         make.right.equalTo(self.imgView).mas_offset(-80);
     }];
 //设置作者名、阅读时间位置
     [self.hintLab mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.contentView).mas_offset(-10);
-        make.left.equalTo(self.contentView).mas_offset(18);
+        make.left.equalTo(self.contentView).mas_offset(15);
         make.right.equalTo(self.imgView).mas_offset(-80);
         make.height.mas_equalTo(12);
     }];
@@ -89,6 +83,7 @@ NSString *TableViewCellReuseIdentifier = @"TableViewCell";
         _hintLab = [[UILabel alloc]init];
         _hintLab.font = [UIFont boldSystemFontOfSize:12];
         _hintLab.numberOfLines = 1;
+        _hintLab.textColor = UIColor.grayColor;
     }
     return _hintLab;
 }
@@ -99,7 +94,6 @@ NSString *TableViewCellReuseIdentifier = @"TableViewCell";
     _imgURL = imgURL.copy;
     NSURL *URL = [NSURL URLWithString:imgURL]; //将NSString的图片链接文本转换为NSURL
     [_imgView sd_setImageWithURL:URL];
-//    self.imgView.image = [UIImage imageNamed:imgName];
 }
 
 -(void)setTitle:(NSString *)title{
