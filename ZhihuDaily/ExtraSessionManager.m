@@ -6,7 +6,6 @@
 //
 
 #import "ExtraSessionManager.h"
-#import "ExtraModel.h"
 
 @implementation ExtraSessionManager
 
