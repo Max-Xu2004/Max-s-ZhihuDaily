@@ -266,6 +266,7 @@ UICollectionViewDelegateFlowLayout>
     Model *model = self.newsArray[indexPath.section][indexPath.row];
     NewsViewController *newsVC = [[NewsViewController alloc]init];
     newsVC.newsURL = model.url;
+    newsVC.idNum = model.idNum;
     newsVC.modalPresentationStyle = 0;
     newsVC.modalTransitionStyle = 1;
     [self presentViewController:newsVC animated:YES completion:nil];
@@ -281,14 +282,12 @@ UICollectionViewDelegateFlowLayout>
     NSDate *theDate = [[NSDate alloc]init];
     theDate = [self.date initWithTimeIntervalSinceNow:self.oneDay*self.counter*-1];
     NSString *dateString = [self.formatter stringFromDate:theDate];
-    NSLog(@"日期%@",dateString);
     self.counter++;
     NSString *apiPrefix = @"https://news-at.zhihu.com/api/3/stories/before/";
     NSString *apiString = [apiPrefix stringByAppendingString:dateString];
     
     
     [SessionManager getDatawithapiURL:apiString Success:^(NSArray * _Nonnull array) {
-        NSLog(@"aaa%@",self.newsArray);
         [self.newsArray addObject:array];
         
                     [self.tableView reloadData]; //刷新数据
@@ -358,6 +357,7 @@ UICollectionViewDelegateFlowLayout>
     BannerModel *bModel = self.bannerArray[indexPath.row];
     NewsViewController *newsVC = [[NewsViewController alloc]init];
     newsVC.newsURL = bModel.url;
+    newsVC.idNum = bModel.idNum;
     newsVC.modalPresentationStyle = 0;
     newsVC.modalTransitionStyle = 1;
     [self presentViewController:newsVC animated:YES completion:nil];

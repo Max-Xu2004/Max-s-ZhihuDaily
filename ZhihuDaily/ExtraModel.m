@@ -9,4 +9,11 @@
 
 @implementation ExtraModel
 
++ (instancetype)DataWithDict:(NSDictionary *)dict{
+    ExtraModel *model = [[ExtraModel alloc]init];
+    model.comments = dict[@"comments"];
+    model.popularity = dict[@"popularity"];
+    return model;
+}
+
 @end

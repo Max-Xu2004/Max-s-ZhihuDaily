@@ -7,6 +7,8 @@
 
 #import "NewsViewController.h"
 #import "Masonry.h"
+#import "ExtraModel.h"
+#import "ExtraSessionManager.h"
 
 @interface NewsViewController ()
 
@@ -14,9 +16,17 @@
 
 @property (nonatomic,strong) UIButton *comment;
 
+@property (nonatomic,strong) UILabel *commentLabel;
+
 @property (nonatomic,strong) UIButton *like;
 
+@property (nonatomic,strong) UILabel *likeLabel;
+
 @property (nonatomic,strong) UIButton *favorites;
+
+@property (nonatomic,strong) UIButton *share;
+
+//@property (nonatomic,strong) UIAlertController *alert;
 
 @property (nonatomic,strong) WKWebView *webView;
 
@@ -29,12 +39,19 @@
     // Do any additional setup after loading the view.
     
     self.view.backgroundColor = UIColor.whiteColor;
+    //array[0]为评论数，array[1]为点赞数
+    [ExtraSessionManager getExtraDatawithidNUM:_idNum Success:^(NSArray * _Nonnull array) {
+            NSLog(@"%@",array);
+        } Failure:^{
+            NSLog(@"Error");
+        }];
     
     [self.view addSubview:self.webView];
     [self.view addSubview:self.back];
     [self.view addSubview:self.comment];
     [self.view addSubview:self.like];
     [self.view addSubview:self.favorites];
+    [self.view addSubview:self.share];
     [self.back addTarget:self action:@selector(buttonClick1:) forControlEvents:UIControlEventTouchUpInside];
     [self.like addTarget:self action:@selector(buttonClick2:) forControlEvents:UIControlEventTouchUpInside];
     [self.favorites addTarget:self action:@selector(buttonClick3:) forControlEvents:UIControlEventTouchUpInside];
@@ -82,6 +99,14 @@
         make.height.mas_equalTo(30);
     }];
     
+    [self.share mas_makeConstraints:^(MASConstraintMaker *make) {
+
+        make.left.equalTo(self.favorites).mas_offset(80);
+        make.bottom.equalTo(self.view).mas_offset(-10);
+        make.width.mas_equalTo(30);
+        make.height.mas_equalTo(30);
+    }];
+    
 }
 #pragma mark - 懒加载
 -(WKWebView *)webView{
@@ -124,6 +149,14 @@
     return _favorites;
 }
 
+- (UIButton *)share{
+    if(_share == nil){
+        _share = [[UIButton alloc]init];
+        [_share setImage:[UIImage imageNamed:@"share"] forState:UIControlStateNormal];
+    }
+    return _share;
+}
+
 #pragma mark - 侧滑返回手势设置
    
 -(void)edgePan:(UIPanGestureRecognizer *)recognizer{
@@ -146,9 +179,11 @@
     self.like.selected =! self.like.selected;
     if(self.like.selected){
             [_like setImage:[UIImage imageNamed:@"likec"] forState:UIControlStateNormal];
+            [self presentAlertControllerwithTitle:@"点赞成功"];
         }
         else{
             [_like setImage:[UIImage imageNamed:@"like"] forState:UIControlStateNormal];
+            [self presentAlertControllerwithTitle:@"取消点赞"];
         }
     
 }
@@ -159,11 +194,30 @@
     self.favorites.selected =! self.favorites.selected;
     if(self.favorites.selected){
             [_favorites setImage:[UIImage imageNamed:@"favoritesc"] forState:UIControlStateNormal];
+        [self presentAlertControllerwithTitle:@"收藏成功"];
         }
         else{
             [_favorites setImage:[UIImage imageNamed:@"favorites"] forState:UIControlStateNormal];
+            [self presentAlertControllerwithTitle:@"取消收藏"];
         }
     
+}
+
+#pragma mark - 弹出提示框
+-(void)presentAlertControllerwithTitle:(NSString *)title{
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:NULL preferredStyle:UIAlertControllerStyleAlert];
+    [NSTimer scheduledTimerWithTimeInterval:2.0f target:self selector:@selector(performDismiss:) userInfo:nil repeats:NO];
+    [self presentViewController:alert animated:YES completion:^{
+           
+        }];
+}
+
+#pragma mark - 自动消失计时器
+-(void) performDismiss:(NSTimer *)timer
+{
+    [self dismissViewControllerAnimated:YES completion:^{
+        
+    }];
 }
 
 

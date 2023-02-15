@@ -1,19 +1,17 @@
 //
-//  SessionManager.h
+//  ExtraSessionManager.h
 //  ZhihuDaily
 //
-//  Created by 许晋嘉 on 2023/2/3.
+//  Created by 许晋嘉 on 2023/2/14.
 //
-//
+
 #import <AFNetworking/AFNetworking.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface SessionManager : AFHTTPSessionManager
-//异步请求数据
+@interface ExtraSessionManager : AFHTTPSessionManager
 
-
-+(void)getDatawithapiURL:(NSString *)api
++(void)getExtraDatawithidNUM:(NSString *)idNUM
                    Success:(void(^)(NSArray *array))success
                    Failure:(void(^)(void)) failure;
 
