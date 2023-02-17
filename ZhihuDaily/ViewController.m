@@ -16,6 +16,7 @@
 #import "TableViewHeaderView.h"
 #import "CollectionViewCell.h"
 #import "BannerSessionManager.h"
+#import "LoginViewController.h"
 
 @interface ViewController () <UITableViewDelegate,
 UITableViewDataSource,
@@ -25,7 +26,7 @@ UICollectionViewDelegateFlowLayout>
 
 @property (nonatomic,strong) UILabel *sayhi; //根据时间显示早上好，下午好，晚上好；
 @property (nonatomic,strong) UILabel *monthView; //当前月份显示
-@property (nonatomic,strong) UILabel *dayView;
+@property (nonatomic,strong) UILabel *dayView; //当前日期显示
 @property (nonatomic,strong) UITableView *tableView; //该TableView用来展示首页新闻
 @property (nonatomic,strong) NSMutableArray<NSArray *> *newsArray; //存放请求数据的数组
 @property (nonatomic,strong) NSArray *bannerArray; //用来存放前五天的新闻数据生成banner
@@ -37,6 +38,7 @@ UICollectionViewDelegateFlowLayout>
 @property (nonatomic,strong) NSDateFormatter *formatter2; //"x月x日"格式
 @property (nonatomic,strong) NSLock *lock; //使用nslock使进程优先请求，避免重复请求导致历史新闻排序混乱
 @property (nonatomic,strong) UICollectionView *collectionView;
+@property (nonatomic,strong) UIButton *login; //登陆的头像按钮
 
 
 @end
@@ -57,7 +59,6 @@ UICollectionViewDelegateFlowLayout>
     self.date = [[NSDate alloc]init];
     self.date = [NSDate date]; //初始化日期计算有关变量
 
-    
 ///获取首页内容
     self.newsArray = [[NSMutableArray alloc]init]; //
     [SessionManager getDatawithapiURL:@"https://news-at.zhihu.com/api/3/news/latest" Success:^(NSArray * _Nonnull array) {
@@ -74,16 +75,13 @@ UICollectionViewDelegateFlowLayout>
         } Failure:^{
             NSLog(@"Error");
         }];
-    
-
 //
-    
-
-
     [self.view addSubview:self.sayhi];
     [self.view addSubview:self.monthView];
     [self.view addSubview:self.dayView];
     [self.view addSubview:self.tableView];
+    [self.view addSubview:self.login];
+    [self.login addTarget:self action:@selector(loginButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     //设置问候语的位置
     [self.sayhi mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view).mas_offset(40);
@@ -105,14 +103,20 @@ UICollectionViewDelegateFlowLayout>
             make.width.mas_equalTo(40);
             make.height.mas_equalTo(20);
     }];
-    //设置tableView的相对位置
-    [_tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+    //设置tableView的位置
+    [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.top.equalTo(self.view).mas_offset(100);
         make.bottom.equalTo(self.view).mas_offset(0);
         make.left.equalTo(self.view).mas_offset(0);
         make.right.equalTo(self.view).mas_offset(0);
     }];
-    
+    //设置login按钮的位置
+    [self.login mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view).mas_offset(45);
+        make.right.equalTo(self.view).mas_offset(-20);
+        make.width.mas_equalTo(40);
+        make.height.mas_equalTo(40);
+    }];
 } //viewDidLoad结束位置
 
 
@@ -235,6 +239,14 @@ UICollectionViewDelegateFlowLayout>
         [_collectionView registerClass:CollectionViewCell.class forCellWithReuseIdentifier:CollectionViewCellReuseIdentifier];
     }
     return _collectionView;
+}
+
+- (UIButton *)login{
+    if(_login == nil){
+        _login = [[UIButton alloc]init];
+        [_login setImage:[UIImage imageNamed:@"touxiang"] forState:UIControlStateNormal];
+    }
+    return _login;
 }
 
 #pragma mark -tableViewDataSource
@@ -368,6 +380,14 @@ UICollectionViewDelegateFlowLayout>
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
     return collectionView.frame.size;
+}
+
+#pragma mark - 登录按钮点击事件
+- (void)loginButtonClick:(UIButton*)button{
+    LoginViewController *loginVC = [[LoginViewController alloc]init];
+    loginVC.modalTransitionStyle = 1;
+    loginVC.modalPresentationStyle = 0;
+    [self presentViewController:loginVC animated:YES completion:nil];
 }
 
 

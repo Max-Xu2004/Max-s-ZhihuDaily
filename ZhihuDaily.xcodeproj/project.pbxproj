@@ -14,6 +14,7 @@
 		75401E122997FE97005C3F73 /* BannerModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 75401E112997FE97005C3F73 /* BannerModel.m */; };
 		75401E14299BA055005C3F73 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 75401E13299BA055005C3F73 /* Assets.xcassets */; };
 		75401E1A299BB93B005C3F73 /* ExtraSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 75401E19299BB93B005C3F73 /* ExtraSessionManager.m */; };
+		75401E1D299CAF9A005C3F73 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 75401E1B299CAF9A005C3F73 /* LoginViewController.m */; };
 		75CA1C30298800A40085F701 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 75CA1C2F298800A40085F701 /* AppDelegate.m */; };
 		75CA1C33298800A40085F701 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 75CA1C32298800A40085F701 /* SceneDelegate.m */; };
 		75CA1C36298800A40085F701 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 75CA1C35298800A40085F701 /* ViewController.m */; };
@@ -42,6 +43,8 @@
 		75401E13299BA055005C3F73 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "../../../../Downloads/Max-s-ZhihuDaily-main/ZhihuDaily/Assets.xcassets"; sourceTree = "<group>"; };
 		75401E18299BB93B005C3F73 /* ExtraSessionManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExtraSessionManager.h; sourceTree = "<group>"; };
 		75401E19299BB93B005C3F73 /* ExtraSessionManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExtraSessionManager.m; sourceTree = "<group>"; };
+		75401E1B299CAF9A005C3F73 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LoginViewController.m; path = ../../../../Desktop/LoginViewController.m; sourceTree = "<group>"; };
+		75401E1C299CAF9A005C3F73 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoginViewController.h; path = ../../../../Desktop/LoginViewController.h; sourceTree = "<group>"; };
 		75CA1C2B298800A40085F701 /* ZhihuDaily.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZhihuDaily.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		75CA1C2E298800A40085F701 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		75CA1C2F298800A40085F701 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -111,6 +114,8 @@
 				75CA1C35298800A40085F701 /* ViewController.m */,
 				75CA1C81298BA21A0085F701 /* NewsViewController.h */,
 				75CA1C82298BA21A0085F701 /* NewsViewController.m */,
+				75401E1C299CAF9A005C3F73 /* LoginViewController.h */,
+				75401E1B299CAF9A005C3F73 /* LoginViewController.m */,
 				75CA1C53298A41CF0085F701 /* TableViewCell.h */,
 				75CA1C54298A41CF0085F701 /* TableViewCell.m */,
 				75401E0A29975D6F005C3F73 /* CollectionViewCell.h */,
@@ -263,6 +268,7 @@
 				75401E1A299BB93B005C3F73 /* ExtraSessionManager.m in Sources */,
 				75CA1C36298800A40085F701 /* ViewController.m in Sources */,
 				75CA1C55298A41CF0085F701 /* TableViewCell.m in Sources */,
+				75401E1D299CAF9A005C3F73 /* LoginViewController.m in Sources */,
 				75401E0F2997D59D005C3F73 /* BannerSessionManager.m in Sources */,
 				7535FA00298CB73D0032B4DD /* SessionManager.m in Sources */,
 				75CA1C30298800A40085F701 /* AppDelegate.m in Sources */,

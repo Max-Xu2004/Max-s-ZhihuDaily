@@ -9,7 +9,7 @@
 #import "Masonry.h"
 #import "ExtraSessionManager.h"
 
-@interface NewsViewController ()
+@interface NewsViewController () <WKUIDelegate,WKNavigationDelegate>
 
 @property (nonatomic,strong) UIButton *back; //返回键
 
@@ -64,7 +64,7 @@
     [self.view addGestureRecognizer:edgeGes];
     
     [self.webView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view).mas_offset(20);
+        make.top.equalTo(self.view);
         make.bottom.equalTo(self.view).mas_offset(-50);
         make.left.equalTo(self.view);
         make.right.equalTo(self.view);
@@ -131,8 +131,11 @@
 -(WKWebView *)webView{
     if(_webView == nil){
         _webView = [[WKWebView alloc]init];
-        NSURL *url = [NSURL URLWithString:_newsURL];
+        NSURL *url = [NSURL URLWithString:self.newsURL];
         [_webView loadRequest:[NSURLRequest requestWithURL:url]];
+        _webView.UIDelegate = self;
+        _webView.navigationDelegate = self;
+        
     }
     return _webView;
 }
@@ -256,6 +259,69 @@
     [self dismissViewControllerAnimated:YES completion:^{
         
     }];
+}
+
+
+
+#pragma mark - WKNavigationDelegate
+// 页面开始加载时调用
+- (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation{
+
+}
+// 当内容开始返回时调用
+- (void)webView:(WKWebView *)webView didCommitNavigation:(WKNavigation *)navigation{
+
+}
+
+// 页面加载失败时调用
+- (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(WKNavigation *)navigation{
+
+}
+// 页面加载完成之后调用
+- (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation{
+    //屏蔽最顶部打开知乎日报和最底部进入知乎（去除页面”广告“元素）
+    [webView evaluateJavaScript:@"document.getElementsByClassName('Daily')[0].remove();document.getElementsByClassName('    view-more')[0].remove();" completionHandler:nil];
+}
+// 接收到服务器跳转请求之后调用
+- (void)webView:(WKWebView *)webView didReceiveServerRedirectForProvisionalNavigation:(WKNavigation *)navigation{
+
+}
+// 在收到响应后，决定是否跳转
+- (void)webView:(WKWebView *)webView decidePolicyForNavigationResponse:(WKNavigationResponse *)navigationResponse decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler{
+
+    NSLog(@"%@",navigationResponse.response.URL.absoluteString);
+    //允许跳转
+    decisionHandler(WKNavigationResponsePolicyAllow);
+    //不允许跳转
+    //decisionHandler(WKNavigationResponsePolicyCancel);
+}
+// 在发送请求之前，决定是否跳转
+- (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler{
+
+     NSLog(@"%@",navigationAction.request.URL.absoluteString);
+    //允许跳转
+    decisionHandler(WKNavigationActionPolicyAllow);
+    //不允许跳转
+    //decisionHandler(WKNavigationActionPolicyCancel);
+}
+
+#pragma mark - WKUIDelegate
+// 创建一个新的WebView
+- (WKWebView *)webView:(WKWebView *)webView createWebViewWithConfiguration:(WKWebViewConfiguration *)configuration forNavigationAction:(WKNavigationAction *)navigationAction windowFeatures:(WKWindowFeatures *)windowFeatures{
+    return [[WKWebView alloc]init];
+}
+// 输入框
+- (void)webView:(WKWebView *)webView runJavaScriptTextInputPanelWithPrompt:(NSString *)prompt defaultText:(nullable NSString *)defaultText initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(NSString * __nullable result))completionHandler{
+    completionHandler(@"http");
+}
+// 确认框
+- (void)webView:(WKWebView *)webView runJavaScriptConfirmPanelWithMessage:(NSString *)message initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(BOOL result))completionHandler{
+    completionHandler(YES);
+}
+// 警告框
+- (void)webView:(WKWebView *)webView runJavaScriptAlertPanelWithMessage:(NSString *)message initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(void))completionHandler{
+    NSLog(@"%@",message);
+    completionHandler();
 }
 
 
