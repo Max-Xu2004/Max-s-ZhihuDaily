@@ -29,7 +29,7 @@ UICollectionViewDelegateFlowLayout>
 @property (nonatomic,strong) UILabel *dayView; //当前日期显示
 @property (nonatomic,strong) UITableView *tableView; //该TableView用来展示首页新闻
 @property (nonatomic,strong) NSMutableArray<NSArray *> *newsArray; //存放请求数据的数组
-@property (nonatomic,strong) NSArray *bannerArray; //用来存放前五天的新闻数据生成banner
+@property (nonatomic,strong) NSMutableArray *bannerArray; //用来存放前五天的新闻数据生成banner
 @property (nonatomic,strong) WKWebView *webView; //用于浏览新闻网页
 @property (nonatomic,strong) NSDate *date; //用于存放当前日期
 @property (nonatomic,assign) NSInteger counter; //计数器，用来计算请求历史数据的次数
@@ -45,10 +45,11 @@ UICollectionViewDelegateFlowLayout>
 
 @implementation ViewController
 
+bool loginOrNot = NO; //该变量用于确认是否登陆
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
-
+    // Do any additional setup after loading the view.    
     self.lock = [[NSLock alloc]init];
     self.formatter = [[NSDateFormatter alloc] init];
     self.formatter.dateFormat = @"yyyyMMdd";
@@ -70,8 +71,11 @@ UICollectionViewDelegateFlowLayout>
     
 ///获取banner内容
     [BannerSessionManager getBannerDatawithSuccess:^(NSArray * _Nonnull array) {
-        self.bannerArray = array;
+        self.bannerArray = [[NSMutableArray alloc]initWithArray:array];
+        [self.bannerArray addObject:self.bannerArray[0]];
+        [self.bannerArray insertObject:self.bannerArray[4] atIndex:0];
             [self.collectionView reloadData];
+        [self.collectionView setContentOffset:CGPointMake(self.collectionView.bounds.size.width, 0) animated:NO];
         } Failure:^{
             NSLog(@"Error");
         }];
@@ -117,6 +121,7 @@ UICollectionViewDelegateFlowLayout>
         make.width.mas_equalTo(40);
         make.height.mas_equalTo(40);
     }];
+    [NSTimer scheduledTimerWithTimeInterval:3.0f target:self selector:@selector(scrollToNextPage:) userInfo:nil repeats:YES];
 } //viewDidLoad结束位置
 
 
@@ -349,7 +354,7 @@ UICollectionViewDelegateFlowLayout>
 
 #pragma mark - UICollectionViewDataSource
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
-    return 5;
+    return self.bannerArray.count;
 }
 
 - (__kindof UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
@@ -375,6 +380,15 @@ UICollectionViewDelegateFlowLayout>
     [self presentViewController:newsVC animated:YES completion:nil];
 }
 
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    [self adjustPicturePosition];
+}
+
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView{
+    
+}
+
+
 
 #pragma mark - UICollectionViewDelegateFlowLayout
 
@@ -392,6 +406,32 @@ UICollectionViewDelegateFlowLayout>
 
 
 
+- (void)adjustPicturePosition {
+    // 拿到图片的X
+    CGFloat offsetX = self.collectionView.contentOffset.x;
+    // 计算是第几张图
+    CGFloat offsetItemNum = offsetX / self.collectionView.bounds.size.width;
+    // 红色图1的位置
+    if (offsetItemNum == 7 - 1) {
+        // 设置的绿色图1的位置
+        [self.collectionView setContentOffset:CGPointMake(self.collectionView.bounds.size.width, 0) animated:NO];
+    } else if (offsetItemNum == 0) {
+        // 红色图4
+        // 设置为绿色图4的位置
+        [self.collectionView setContentOffset:CGPointMake((7 - 2) * self.collectionView.bounds.size.width, 0) animated:NO];
+    }
+    // 四舍五入(主要是为了滑动到一半的图片设置pagecontrol)
+    // 拿到当前的图片count
+//    NSInteger pageNum = (NSInteger)round(offsetItemNum);
+    // 设置页数
+//    if  self.pageControl.currentPage = item;
+}
+
+#pragma mark - 自动轮播
+-(void) scrollToNextPage:(NSTimer *)timer
+{
+    [self.collectionView setContentOffset:CGPointMake(self.collectionView.contentOffset.x+self.collectionView.bounds.size.width, 0) animated:YES];
+}
 
 @end
     
