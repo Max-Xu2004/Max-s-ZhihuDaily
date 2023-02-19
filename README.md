@@ -10,7 +10,7 @@
 
 banner无限轮播图
 
-![QQ20230219-205946-HD](https://user-images.githubusercontent.com/114380848/219949879-0cee55ef-2c41-420e-b60b-e2715787507c.gif)
+![QQ20230219-212427-HD](https://user-images.githubusercontent.com/114380848/219950988-fc041d81-0c06-4fcc-88d0-b7fd473539e4.gif)
 
 同时还实现了伪点赞、伪登录等功能不一一展示
 
