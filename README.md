@@ -1,6 +1,7 @@
 # Max-s-ZhihuDaily
-本项目为知乎旗下知乎日报app粗制滥造的仿制品（逃）
-主要功能包括新闻缩略瀑布流浏览
+本项目为知乎旗下知乎日报app粗制滥造的仿制品（逃),主要功能包括
+
+新闻缩略瀑布流浏览
 
 ![QQ20230219-204812-HD](https://user-images.githubusercontent.com/114380848/219949261-1c0cf52d-70ef-49ca-b620-3c71a204adcf.gif)
 
