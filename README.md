@@ -15,6 +15,8 @@ banner无限轮播图
 
 同时还实现了伪点赞、伪登录等功能不一一展示
 
+伪登录的账号密码均为123456
+
 主要由首页（默认的ViewController）、新闻展示页（NewsViewController）和登录页（LoginViewController）组成
 
 瀑布流的实现使用了tableview，而banner轮播使用了collectionview，并将其作为tableview的headerview
