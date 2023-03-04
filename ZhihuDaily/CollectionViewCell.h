@@ -14,11 +14,11 @@ UIKIT_EXTERN NSString *CollectionViewCellReuseIdentifier;
 
 @interface CollectionViewCell : UICollectionViewCell
 
-@property (nonatomic,strong) NSString *imgLink;
+@property (nonatomic,copy) NSString *imgLink;
 
-@property (nonatomic,strong) NSString *titleText;
+@property (nonatomic,copy) NSString *titleText;
 
-@property (nonatomic,strong) NSString *hintText;
+@property (nonatomic,copy) NSString *hintText;
 
 @end
 

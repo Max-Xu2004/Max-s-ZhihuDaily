@@ -16,9 +16,9 @@ UIKIT_EXTERN NSString *TableViewCellReuseIdentifier;
 
 @property (nonatomic,copy) NSString *imgURL;
 
-@property (nonatomic,strong) NSString *title;
+@property (nonatomic,copy) NSString *title;
 
-@property (nonatomic,strong) NSString *hint;
+@property (nonatomic,copy) NSString *hint;
 
 @end
 
