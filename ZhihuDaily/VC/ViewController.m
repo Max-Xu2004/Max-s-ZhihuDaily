@@ -18,6 +18,8 @@
 #import "BannerSessionManager.h"
 #import "LoginViewController.h"
 
+#define stautsBarHeight ([UIApplication sharedApplication].statusBarFrame.size.height)
+
 @interface ViewController () <UITableViewDelegate,
 UITableViewDataSource,
 UICollectionViewDelegate,
@@ -39,6 +41,7 @@ UICollectionViewDelegateFlowLayout>
 @property (nonatomic,strong) NSLock *lock; //使用nslock使进程优先请求，避免重复请求导致历史新闻排序混乱
 @property (nonatomic,strong) UICollectionView *collectionView;
 @property (nonatomic,strong) UIButton *login; //登陆的头像按钮
+@property (nonatomic,strong) NSTimer *scrollTimer; //轮播图计时器
 
 
 @end
@@ -59,16 +62,7 @@ bool loginOrNot = NO; //该变量用于确认是否登陆
     self.oneDay = 86400; //
     self.date = [[NSDate alloc]init];
     self.date = [NSDate date]; //初始化日期计算有关变量
-
-///获取首页内容
-    self.newsArray = [[NSMutableArray alloc]init]; //
-    [SessionManager getDatawithapiURL:@"https://news-at.zhihu.com/api/3/news/latest" Success:^(NSArray * _Nonnull array) {
-        [self.newsArray addObject:array];
-        [self.tableView reloadData]; //刷新数据
-        } Failure:^{
-            NSLog(@"Error ");
-        }];
-    
+    [self getLatestNews];
 ///获取banner内容
     [BannerSessionManager getBannerDatawithSuccess:^(NSArray * _Nonnull array) {
         self.bannerArray = [[NSMutableArray alloc]initWithArray:array];
@@ -88,40 +82,40 @@ bool loginOrNot = NO; //该变量用于确认是否登陆
     [self.login addTarget:self action:@selector(loginButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     //设置问候语的位置
     [self.sayhi mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view).mas_offset(40);
+        make.top.equalTo(self.view).mas_offset(stautsBarHeight);
         make.left.equalTo(self.view).mas_offset(60);
         make.width.mas_equalTo(120);
         make.height.mas_equalTo(50);
     }];
     //设置月份显示的位置
     [self.monthView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view).mas_offset(65);
+        make.top.equalTo(self.view).mas_offset(stautsBarHeight+25);
         make.left.equalTo(self.view).mas_offset(20);
         make.width.mas_equalTo(40);
         make.height.mas_equalTo(20);
     }];
     //设置日期显示的位置
     [self.dayView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.view).mas_offset(45);
+            make.top.equalTo(self.view).mas_offset(stautsBarHeight+5);
             make.left.equalTo(self.view).mas_offset(22);
             make.width.mas_equalTo(40);
             make.height.mas_equalTo(20);
     }];
     //设置tableView的位置
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.top.equalTo(self.view).mas_offset(100);
+                make.top.equalTo(self.view).mas_offset(stautsBarHeight+60);
         make.bottom.equalTo(self.view).mas_offset(0);
         make.left.equalTo(self.view).mas_offset(0);
         make.right.equalTo(self.view).mas_offset(0);
     }];
     //设置login按钮的位置
     [self.login mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view).mas_offset(45);
+        make.top.equalTo(self.view).mas_offset(stautsBarHeight+5);
         make.right.equalTo(self.view).mas_offset(-20);
         make.width.mas_equalTo(40);
         make.height.mas_equalTo(40);
     }];
-    [NSTimer scheduledTimerWithTimeInterval:3.0f target:self selector:@selector(scrollToNextPage:) userInfo:nil repeats:YES];
+    _scrollTimer = [NSTimer scheduledTimerWithTimeInterval:3.0 target:self selector:@selector(scrollToNextPage:) userInfo:nil repeats:YES];
 } //viewDidLoad结束位置
 
 
@@ -129,13 +123,9 @@ bool loginOrNot = NO; //该变量用于确认是否登陆
 -(UILabel *)sayhi{
     if(_sayhi == nil){
         _sayhi = [[UILabel alloc]init];
-        _sayhi.font = [UIFont systemFontOfSize:25];
+        _sayhi.font = [UIFont boldSystemFontOfSize:25];
         NSCalendar *calendar = [NSCalendar currentCalendar];
         long hour = [calendar component:NSCalendarUnitHour fromDate:[NSDate date]];
-        
-        
-        
-//        long minute = [calendar component:NSCalendarUnitMinute fromDate:[NSDate date]];
         NSLog(@"%ld",hour);
        //从这里开始为根据时间对问候文本的判定
         if(hour>=0&&hour<6) _sayhi.text = @"早点休息";
@@ -146,20 +136,11 @@ bool loginOrNot = NO; //该变量用于确认是否登陆
         else if (hour>=23) _sayhi.text = @"早点休息";
         //判定结束
         NSLog(@"%@",_sayhi.text);
-        
-//        _sayhi.frame = CGRectMake(100, 100, 150 , 50);
-        _sayhi.backgroundColor = UIColor.whiteColor;
     }
     return _sayhi;
 }
 
 -(UILabel *)monthView{
-    
-//    NSDate *a;
-//    NSCalendar *b;
-//    NSDateFormatter *c;
-//    NSDateComponents *d;
-    
     if(_monthView == nil){
         _monthView = [[UILabel alloc]init];
         _monthView.font = [UIFont systemFontOfSize:18];
@@ -211,7 +192,6 @@ bool loginOrNot = NO; //该变量用于确认是否登陆
         _tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
         _tableView.showsVerticalScrollIndicator = NO;
         _tableView.showsVerticalScrollIndicator = NO;
-        _tableView.backgroundColor = UIColor.whiteColor; //设置白色背景
         self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone; //取消分割线
 
         
@@ -291,7 +271,7 @@ bool loginOrNot = NO; //该变量用于确认是否登陆
     
 }
 
-#pragma mark - 新闻列表刷新
+#pragma mark - 新闻列表刷新（获取历史新闻）
 - (void)viewRefresh{
 
     [self.lock lock];
@@ -374,7 +354,7 @@ bool loginOrNot = NO; //该变量用于确认是否登陆
     BannerModel *bModel = self.bannerArray[indexPath.row];
     NewsViewController *newsVC = [[NewsViewController alloc]init];
     newsVC.newsURL = bModel.url;
-    newsVC.idNum = bModel.idNum;
+    newsVC.idNum = bModel.idNum;  //向newsVC传递新闻的链接和id数，用于浏览新闻和获取点赞数和评论数等extra信息
     newsVC.modalPresentationStyle = 0;
     newsVC.modalTransitionStyle = 1;
     [self presentViewController:newsVC animated:YES completion:nil];
@@ -386,6 +366,14 @@ bool loginOrNot = NO; //该变量用于确认是否登陆
 
 - (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView{
     
+}
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView{
+    [self.scrollTimer setFireDate:[NSDate distantFuture]];
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
+    [self performSelector:@selector(continueScrollTimer) withObject:nil afterDelay:3.0];
 }
 
 
@@ -426,11 +414,27 @@ bool loginOrNot = NO; //该变量用于确认是否登陆
     // 设置页数
 //    if  self.pageControl.currentPage = item;
 }
-
+#pragma mark - 恢复自动轮播
+-(void) continueScrollTimer{
+    [self.scrollTimer setFireDate:[NSDate distantPast]];
+}
 #pragma mark - 自动轮播
 -(void) scrollToNextPage:(NSTimer *)timer
 {
     [self.collectionView setContentOffset:CGPointMake(self.collectionView.contentOffset.x+self.collectionView.bounds.size.width, 0) animated:YES];
+}
+
+
+
+#pragma mark - 获取最新新闻
+-(void) getLatestNews{
+    self.newsArray = [[NSMutableArray alloc]init]; //
+    [SessionManager getDatawithapiURL:@"https://news-at.zhihu.com/api/3/news/latest" Success:^(NSArray * _Nonnull array) {
+        [self.newsArray addObject:array];
+        [self.tableView reloadData]; //刷新数据
+            } Failure:^{
+        NSLog(@"Error ");
+            }];
 }
 
 @end

@@ -23,7 +23,6 @@ NSString *TableViewHeaderViewReuseIdentifier = @"TableViewHeaderView";
 - (instancetype)initWithReuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithReuseIdentifier:reuseIdentifier];
     if (self) {
-        self.contentView.backgroundColor = UIColor.whiteColor;
         [self.contentView addSubview:self.titleLab];
     }
     return self;
@@ -31,7 +30,6 @@ NSString *TableViewHeaderViewReuseIdentifier = @"TableViewHeaderView";
 
 - (void)updateConfigurationUsingState:(UIViewConfigurationState *)state {
     self.titleLab.frame = CGRectMake(15, -8, 70, 30);
-    self.titleLab.backgroundColor = UIColor.whiteColor;
 }
 
 #pragma mark - Lazy

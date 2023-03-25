@@ -27,6 +27,9 @@
 
 @property (nonatomic,strong) WKWebView *webView;
 
+@property (nonatomic,assign) UIUserInterfaceStyle mode;
+
+
 @end
 
 @implementation NewsViewController
@@ -34,19 +37,17 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
-    self.view.backgroundColor = UIColor.whiteColor;
     //array[0]为评论数，array[1]为点赞数
     [ExtraSessionManager getExtraDatawithidNUM:_idNum Success:^(NSArray * _Nonnull array) {
-//        self.extraArray = [[NSMutableArray alloc]initWithArray:array];
-//        NSLog(@"111%@",self.extraArray[1]);
         self.commentLabel.text = [NSString stringWithFormat:@"%@",array[0]];
         self.likeLabel.text = [NSString stringWithFormat:@"%@",array[1]];
         } Failure:^{
             NSLog(@"Error");
         }];
     
-    
+    self.mode = UITraitCollection.currentTraitCollection.userInterfaceStyle;
+    if(self.mode == UIUserInterfaceStyleDark);
+    else self.view.backgroundColor = UIColor.whiteColor;
     [self.view addSubview:self.webView];
     [self.view addSubview:self.back];
     [self.view addSubview:self.comment];
@@ -282,6 +283,13 @@
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation{
     //屏蔽最顶部打开知乎日报和最底部进入知乎（去除页面”广告“元素）
     [webView evaluateJavaScript:@"document.getElementsByClassName('Daily')[0].remove();document.getElementsByClassName('    view-more')[0].remove();" completionHandler:nil];
+    if(self.mode == UIUserInterfaceStyleDark){
+        // 改变网页内容背景颜色
+        [webView evaluateJavaScript:@"document.getElementsByTagName('body')[0].style.background='#8F999999'"completionHandler:nil];
+        // 改变网页内容文字颜色
+        [webView evaluateJavaScript:@"document.getElementsByTagName('body')[0].style.webkitTextFillColor= '#8F999999'"completionHandler:nil];
+    }
+    
 }
 // 接收到服务器跳转请求之后调用
 - (void)webView:(WKWebView *)webView didReceiveServerRedirectForProvisionalNavigation:(WKNavigation *)navigation{

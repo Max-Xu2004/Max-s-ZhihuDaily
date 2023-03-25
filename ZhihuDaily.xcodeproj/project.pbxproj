@@ -85,6 +85,19 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		75401E2D29B45E2D005C3F73 /* VC */ = {
+			isa = PBXGroup;
+			children = (
+				75CA1C34298800A40085F701 /* ViewController.h */,
+				75CA1C35298800A40085F701 /* ViewController.m */,
+				75CA1C81298BA21A0085F701 /* NewsViewController.h */,
+				75CA1C82298BA21A0085F701 /* NewsViewController.m */,
+				75401E2A29B33C0D005C3F73 /* LoginViewController.h */,
+				75401E2B29B33C0D005C3F73 /* LoginViewController.m */,
+			);
+			path = VC;
+			sourceTree = "<group>";
+		};
 		75CA1C22298800A40085F701 = {
 			isa = PBXGroup;
 			children = (
@@ -110,12 +123,7 @@
 				75CA1C2F298800A40085F701 /* AppDelegate.m */,
 				75CA1C31298800A40085F701 /* SceneDelegate.h */,
 				75CA1C32298800A40085F701 /* SceneDelegate.m */,
-				75CA1C34298800A40085F701 /* ViewController.h */,
-				75CA1C35298800A40085F701 /* ViewController.m */,
-				75CA1C81298BA21A0085F701 /* NewsViewController.h */,
-				75CA1C82298BA21A0085F701 /* NewsViewController.m */,
-				75401E2A29B33C0D005C3F73 /* LoginViewController.h */,
-				75401E2B29B33C0D005C3F73 /* LoginViewController.m */,
+				75401E2D29B45E2D005C3F73 /* VC */,
 				75CA1C53298A41CF0085F701 /* TableViewCell.h */,
 				75CA1C54298A41CF0085F701 /* TableViewCell.m */,
 				75401E0A29975D6F005C3F73 /* CollectionViewCell.h */,
