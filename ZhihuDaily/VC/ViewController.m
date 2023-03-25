@@ -53,69 +53,18 @@ bool loginOrNot = NO; //该变量用于确认是否登陆
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.    
-    self.lock = [[NSLock alloc]init];
-    self.formatter = [[NSDateFormatter alloc] init];
-    self.formatter.dateFormat = @"yyyyMMdd";
-    self.formatter2 = [[NSDateFormatter alloc] init];
-    self.formatter2.dateFormat = @"MM月dd日";
-    self.counter = 0;
-    self.oneDay = 86400; //
-    self.date = [[NSDate alloc]init];
-    self.date = [NSDate date]; //初始化日期计算有关变量
-    [self getLatestNews];
-///获取banner内容
-    [BannerSessionManager getBannerDatawithSuccess:^(NSArray * _Nonnull array) {
-        self.bannerArray = [[NSMutableArray alloc]initWithArray:array];
-        [self.bannerArray addObject:self.bannerArray[0]];
-        [self.bannerArray insertObject:self.bannerArray[4] atIndex:0];
-            [self.collectionView reloadData];
-        [self.collectionView setContentOffset:CGPointMake(self.collectionView.bounds.size.width, 0) animated:NO];
-        } Failure:^{
-            NSLog(@"Error");
-        }];
-//
+    self.lock = [[NSLock alloc]init]; //初始化线程锁
+    [self nsDateInit]; //初始化NSDate相关变量
+    [self getLatestNews]; //获取最新新闻
+    [self bannerInit]; //banner初始化
     [self.view addSubview:self.sayhi];
     [self.view addSubview:self.monthView];
     [self.view addSubview:self.dayView];
     [self.view addSubview:self.tableView];
     [self.view addSubview:self.login];
     [self.login addTarget:self action:@selector(loginButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    //设置问候语的位置
-    [self.sayhi mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view).mas_offset(stautsBarHeight);
-        make.left.equalTo(self.view).mas_offset(60);
-        make.width.mas_equalTo(120);
-        make.height.mas_equalTo(50);
-    }];
-    //设置月份显示的位置
-    [self.monthView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view).mas_offset(stautsBarHeight+25);
-        make.left.equalTo(self.view).mas_offset(20);
-        make.width.mas_equalTo(40);
-        make.height.mas_equalTo(20);
-    }];
-    //设置日期显示的位置
-    [self.dayView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.view).mas_offset(stautsBarHeight+5);
-            make.left.equalTo(self.view).mas_offset(22);
-            make.width.mas_equalTo(40);
-            make.height.mas_equalTo(20);
-    }];
-    //设置tableView的位置
-    [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.top.equalTo(self.view).mas_offset(stautsBarHeight+60);
-        make.bottom.equalTo(self.view).mas_offset(0);
-        make.left.equalTo(self.view).mas_offset(0);
-        make.right.equalTo(self.view).mas_offset(0);
-    }];
-    //设置login按钮的位置
-    [self.login mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view).mas_offset(stautsBarHeight+5);
-        make.right.equalTo(self.view).mas_offset(-20);
-        make.width.mas_equalTo(40);
-        make.height.mas_equalTo(40);
-    }];
     _scrollTimer = [NSTimer scheduledTimerWithTimeInterval:3.0 target:self selector:@selector(scrollToNextPage:) userInfo:nil repeats:YES];
+    [self frameInit];
 } //viewDidLoad结束位置
 
 
@@ -124,18 +73,7 @@ bool loginOrNot = NO; //该变量用于确认是否登陆
     if(_sayhi == nil){
         _sayhi = [[UILabel alloc]init];
         _sayhi.font = [UIFont boldSystemFontOfSize:25];
-        NSCalendar *calendar = [NSCalendar currentCalendar];
-        long hour = [calendar component:NSCalendarUnitHour fromDate:[NSDate date]];
-        NSLog(@"%ld",hour);
-       //从这里开始为根据时间对问候文本的判定
-        if(hour>=0&&hour<6) _sayhi.text = @"早点休息";
-        else if (hour>=6&&hour<12) _sayhi.text = @"知乎日报";
-        else if (hour==12) _sayhi.text = @"知乎日报";
-        else if (hour>12&&hour<18) _sayhi.text = @"知乎日报";
-        else if (hour>=18&&hour<23) _sayhi.text = @"晚上好！";
-        else if (hour>=23) _sayhi.text = @"早点休息";
-        //判定结束
-        NSLog(@"%@",_sayhi.text);
+        _sayhi.text = [self greeting];
     }
     return _sayhi;
 }
@@ -297,21 +235,13 @@ bool loginOrNot = NO; //该变量用于确认是否登陆
         } Failure:^{
             NSLog(@"Error ");
         }];
-    
-    
-
 }
-
-// Variable height support
+#pragma mark -HeaderViewDataSource
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 20;
+    if(section == 0) return 0;
+    else return 25;
 }
-
-//- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-//    return 50;
-//}
-//
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
     return 0;
 }
@@ -326,9 +256,6 @@ bool loginOrNot = NO; //该变量用于确认是否登陆
     
     headerView.date = [self.formatter2 stringFromDate:[self.date initWithTimeIntervalSinceNow:self.oneDay*section*-1]];
     NSLog(@"显示日期为%@",headerView.date);
-
-    
-    
     return headerView;
 }
 
@@ -435,6 +362,81 @@ bool loginOrNot = NO; //该变量用于确认是否登陆
             } Failure:^{
         NSLog(@"Error ");
             }];
+}
+
+#pragma mark - 位置初始化
+-(void) frameInit{
+    //设置问候语的位置
+    [self.sayhi mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view).mas_offset(stautsBarHeight);
+        make.left.equalTo(self.view).mas_offset(60);
+        make.width.mas_equalTo(120);
+        make.height.mas_equalTo(50);
+    }];
+    //设置月份显示的位置
+    [self.monthView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view).mas_offset(stautsBarHeight+25);
+        make.left.equalTo(self.view).mas_offset(20);
+        make.width.mas_equalTo(40);
+        make.height.mas_equalTo(20);
+    }];
+    //设置日期显示的位置
+    [self.dayView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.view).mas_offset(stautsBarHeight+5);
+            make.left.equalTo(self.view).mas_offset(22);
+            make.width.mas_equalTo(40);
+            make.height.mas_equalTo(20);
+    }];
+    //设置tableView的位置
+    [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.top.equalTo(self.view).mas_offset(stautsBarHeight+60);
+        make.bottom.equalTo(self.view).mas_offset(0);
+        make.left.equalTo(self.view).mas_offset(0);
+        make.right.equalTo(self.view).mas_offset(0);
+    }];
+    //设置login按钮的位置
+    [self.login mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view).mas_offset(stautsBarHeight+5);
+        make.right.equalTo(self.view).mas_offset(-20);
+        make.width.mas_equalTo(40);
+        make.height.mas_equalTo(40);
+    }];
+}
+#pragma mark - 初始化nsdate变量
+-(void) nsDateInit{
+    self.formatter = [[NSDateFormatter alloc] init];
+    self.formatter.dateFormat = @"yyyyMMdd";
+    self.formatter2 = [[NSDateFormatter alloc] init];
+    self.formatter2.dateFormat = @"MM月dd日";
+    self.counter = 0;
+    self.oneDay = 86400; //
+    self.date = [[NSDate alloc]init];
+    self.date = [NSDate date]; //初始化日期计算有关变量
+}
+#pragma mark - Banner初始化
+-(void) bannerInit{
+    [BannerSessionManager getBannerDatawithSuccess:^(NSArray * _Nonnull array) {
+        self.bannerArray = [[NSMutableArray alloc]initWithArray:array];
+        [self.bannerArray addObject:self.bannerArray[0]];
+        [self.bannerArray insertObject:self.bannerArray[4] atIndex:0];
+            [self.collectionView reloadData];
+        [self.collectionView setContentOffset:CGPointMake(self.collectionView.bounds.size.width, 0) animated:NO];
+        } Failure:^{
+            NSLog(@"Error");
+        }];
+}
+#pragma mark - 问候语判断
+-(NSString *) greeting{
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    long hour = [calendar component:NSCalendarUnitHour fromDate:[NSDate date]];
+    NSLog(@"%ld",hour);
+   //从这里开始为根据时间对问候文本的判定
+    if(hour>=0&&hour<6) return @"早点休息";
+    else if (hour>=6&&hour<12) return @"知乎日报";
+    else if (hour==12) return @"知乎日报";
+    else if (hour>12&&hour<18) return @"知乎日报";
+    else if (hour>=18&&hour<23) return @"晚上好！";
+    else return @"早点休息";
 }
 
 @end
