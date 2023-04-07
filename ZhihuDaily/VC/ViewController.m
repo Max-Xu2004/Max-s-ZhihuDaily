@@ -202,11 +202,7 @@ bool loginOrNot = NO; //该变量用于确认是否登陆
     NewsViewController *newsVC = [[NewsViewController alloc]init];
     newsVC.newsURL = model.url;
     newsVC.idNum = model.idNum;
-    newsVC.modalPresentationStyle = 0;
-    newsVC.modalTransitionStyle = 1;
-    [self presentViewController:newsVC animated:YES completion:nil];
-    
-    
+    [self.navigationController pushViewController:newsVC animated:YES];
 }
 
 #pragma mark - 新闻列表刷新（获取历史新闻）
@@ -282,9 +278,7 @@ bool loginOrNot = NO; //该变量用于确认是否登陆
     NewsViewController *newsVC = [[NewsViewController alloc]init];
     newsVC.newsURL = bModel.url;
     newsVC.idNum = bModel.idNum;  //向newsVC传递新闻的链接和id数，用于浏览新闻和获取点赞数和评论数等extra信息
-    newsVC.modalPresentationStyle = 0;
-    newsVC.modalTransitionStyle = 1;
-    [self presentViewController:newsVC animated:YES completion:nil];
+    [self.navigationController pushViewController:newsVC animated:YES];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
@@ -314,9 +308,7 @@ bool loginOrNot = NO; //该变量用于确认是否登陆
 #pragma mark - 登录按钮点击事件
 - (void)loginButtonClick:(UIButton*)button{
     LoginViewController *loginVC = [[LoginViewController alloc]init];
-    loginVC.modalTransitionStyle = 1;
-    loginVC.modalPresentationStyle = 0;
-    [self presentViewController:loginVC animated:YES completion:nil];
+    [self.navigationController pushViewController:loginVC animated:YES];
 }
 
 

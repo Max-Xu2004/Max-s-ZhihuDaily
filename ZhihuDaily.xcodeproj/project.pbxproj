@@ -12,13 +12,11 @@
 		75401E0C29975D6F005C3F73 /* CollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 75401E0B29975D6F005C3F73 /* CollectionViewCell.m */; };
 		75401E0F2997D59D005C3F73 /* BannerSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 75401E0E2997D59D005C3F73 /* BannerSessionManager.m */; };
 		75401E122997FE97005C3F73 /* BannerModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 75401E112997FE97005C3F73 /* BannerModel.m */; };
-		75401E14299BA055005C3F73 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 75401E13299BA055005C3F73 /* Assets.xcassets */; };
 		75401E1A299BB93B005C3F73 /* ExtraSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 75401E19299BB93B005C3F73 /* ExtraSessionManager.m */; };
 		75401E2C29B33C0D005C3F73 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 75401E2B29B33C0D005C3F73 /* LoginViewController.m */; };
+		756BA08D29E026CB008F83E2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 756BA08C29E026CB008F83E2 /* Assets.xcassets */; };
 		75CA1C30298800A40085F701 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 75CA1C2F298800A40085F701 /* AppDelegate.m */; };
-		75CA1C33298800A40085F701 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 75CA1C32298800A40085F701 /* SceneDelegate.m */; };
 		75CA1C36298800A40085F701 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 75CA1C35298800A40085F701 /* ViewController.m */; };
-		75CA1C39298800A40085F701 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75CA1C37298800A40085F701 /* Main.storyboard */; };
 		75CA1C3E298800A40085F701 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75CA1C3C298800A40085F701 /* LaunchScreen.storyboard */; };
 		75CA1C41298800A40085F701 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 75CA1C40298800A40085F701 /* main.m */; };
 		75CA1C492988D06A0085F701 /* Model.m in Sources */ = {isa = PBXBuildFile; fileRef = 75CA1C482988D06A0085F701 /* Model.m */; };
@@ -40,19 +38,16 @@
 		75401E0E2997D59D005C3F73 /* BannerSessionManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BannerSessionManager.m; sourceTree = "<group>"; };
 		75401E102997FE97005C3F73 /* BannerModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BannerModel.h; sourceTree = "<group>"; };
 		75401E112997FE97005C3F73 /* BannerModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BannerModel.m; sourceTree = "<group>"; };
-		75401E13299BA055005C3F73 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "../../../../Downloads/Max-s-ZhihuDaily-main/ZhihuDaily/Assets.xcassets"; sourceTree = "<group>"; };
 		75401E18299BB93B005C3F73 /* ExtraSessionManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExtraSessionManager.h; sourceTree = "<group>"; };
 		75401E19299BB93B005C3F73 /* ExtraSessionManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExtraSessionManager.m; sourceTree = "<group>"; };
 		75401E2A29B33C0D005C3F73 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		75401E2B29B33C0D005C3F73 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		756BA08C29E026CB008F83E2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		75CA1C2B298800A40085F701 /* ZhihuDaily.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZhihuDaily.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		75CA1C2E298800A40085F701 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		75CA1C2F298800A40085F701 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		75CA1C31298800A40085F701 /* SceneDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SceneDelegate.h; sourceTree = "<group>"; };
-		75CA1C32298800A40085F701 /* SceneDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SceneDelegate.m; sourceTree = "<group>"; };
 		75CA1C34298800A40085F701 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		75CA1C35298800A40085F701 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		75CA1C38298800A40085F701 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		75CA1C3D298800A40085F701 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		75CA1C3F298800A40085F701 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		75CA1C40298800A40085F701 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -98,6 +93,43 @@
 			path = VC;
 			sourceTree = "<group>";
 		};
+		756BA04429DFC102008F83E2 /* ReuseCell */ = {
+			isa = PBXGroup;
+			children = (
+				75CA1C53298A41CF0085F701 /* TableViewCell.h */,
+				75CA1C54298A41CF0085F701 /* TableViewCell.m */,
+				75401E0A29975D6F005C3F73 /* CollectionViewCell.h */,
+				75401E0B29975D6F005C3F73 /* CollectionViewCell.m */,
+				75401DF8298F4E1D005C3F73 /* TableViewHeaderView.h */,
+				75401DF9298F4E1D005C3F73 /* TableViewHeaderView.m */,
+			);
+			name = ReuseCell;
+			sourceTree = "<group>";
+		};
+		756BA04529DFC137008F83E2 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				75CA1C472988D06A0085F701 /* Model.h */,
+				75CA1C482988D06A0085F701 /* Model.m */,
+				75401E102997FE97005C3F73 /* BannerModel.h */,
+				75401E112997FE97005C3F73 /* BannerModel.m */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		756BA04729DFC175008F83E2 /* SessionManager */ = {
+			isa = PBXGroup;
+			children = (
+				7535F9FE298CB73D0032B4DD /* SessionManager.h */,
+				7535F9FF298CB73D0032B4DD /* SessionManager.m */,
+				75401E0D2997D59D005C3F73 /* BannerSessionManager.h */,
+				75401E0E2997D59D005C3F73 /* BannerSessionManager.m */,
+				75401E18299BB93B005C3F73 /* ExtraSessionManager.h */,
+				75401E19299BB93B005C3F73 /* ExtraSessionManager.m */,
+			);
+			path = SessionManager;
+			sourceTree = "<group>";
+		};
 		75CA1C22298800A40085F701 = {
 			isa = PBXGroup;
 			children = (
@@ -121,30 +153,14 @@
 			children = (
 				75CA1C2E298800A40085F701 /* AppDelegate.h */,
 				75CA1C2F298800A40085F701 /* AppDelegate.m */,
-				75CA1C31298800A40085F701 /* SceneDelegate.h */,
-				75CA1C32298800A40085F701 /* SceneDelegate.m */,
+				75CA1C40298800A40085F701 /* main.m */,
+				756BA08C29E026CB008F83E2 /* Assets.xcassets */,
 				75401E2D29B45E2D005C3F73 /* VC */,
-				75CA1C53298A41CF0085F701 /* TableViewCell.h */,
-				75CA1C54298A41CF0085F701 /* TableViewCell.m */,
-				75401E0A29975D6F005C3F73 /* CollectionViewCell.h */,
-				75401E0B29975D6F005C3F73 /* CollectionViewCell.m */,
-				75401DF8298F4E1D005C3F73 /* TableViewHeaderView.h */,
-				75401DF9298F4E1D005C3F73 /* TableViewHeaderView.m */,
-				75CA1C37298800A40085F701 /* Main.storyboard */,
-				75401E13299BA055005C3F73 /* Assets.xcassets */,
+				756BA04429DFC102008F83E2 /* ReuseCell */,
+				756BA04529DFC137008F83E2 /* Models */,
+				756BA04729DFC175008F83E2 /* SessionManager */,
 				75CA1C3C298800A40085F701 /* LaunchScreen.storyboard */,
 				75CA1C3F298800A40085F701 /* Info.plist */,
-				75CA1C40298800A40085F701 /* main.m */,
-				75CA1C472988D06A0085F701 /* Model.h */,
-				75CA1C482988D06A0085F701 /* Model.m */,
-				75401E102997FE97005C3F73 /* BannerModel.h */,
-				75401E112997FE97005C3F73 /* BannerModel.m */,
-				7535F9FE298CB73D0032B4DD /* SessionManager.h */,
-				7535F9FF298CB73D0032B4DD /* SessionManager.m */,
-				75401E0D2997D59D005C3F73 /* BannerSessionManager.h */,
-				75401E0E2997D59D005C3F73 /* BannerSessionManager.m */,
-				75401E18299BB93B005C3F73 /* ExtraSessionManager.h */,
-				75401E19299BB93B005C3F73 /* ExtraSessionManager.m */,
 			);
 			path = ZhihuDaily;
 			sourceTree = "<group>";
@@ -217,9 +233,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				756BA08D29E026CB008F83E2 /* Assets.xcassets in Resources */,
 				75CA1C3E298800A40085F701 /* LaunchScreen.storyboard in Resources */,
-				75401E14299BA055005C3F73 /* Assets.xcassets in Resources */,
-				75CA1C39298800A40085F701 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -282,7 +297,6 @@
 				75CA1C41298800A40085F701 /* main.m in Sources */,
 				75401E122997FE97005C3F73 /* BannerModel.m in Sources */,
 				75401E0C29975D6F005C3F73 /* CollectionViewCell.m in Sources */,
-				75CA1C33298800A40085F701 /* SceneDelegate.m in Sources */,
 				75CA1C492988D06A0085F701 /* Model.m in Sources */,
 				75CA1C83298BA21A0085F701 /* NewsViewController.m in Sources */,
 				75401E2C29B33C0D005C3F73 /* LoginViewController.m in Sources */,
@@ -292,14 +306,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		75CA1C37298800A40085F701 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				75CA1C38298800A40085F701 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		75CA1C3C298800A40085F701 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -433,7 +439,7 @@
 				INFOPLIST_FILE = ZhihuDaily/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIMainStoryboardFile = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -460,7 +466,7 @@
 				INFOPLIST_FILE = ZhihuDaily/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIMainStoryboardFile = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (

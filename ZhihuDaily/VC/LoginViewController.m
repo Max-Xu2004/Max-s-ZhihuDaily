@@ -97,9 +97,7 @@ extern bool loginOrNot;
 }
 #pragma mark - 返回按钮事件
 - (void)buttonClick2:(UIButton*)button{
-    [self dismissViewControllerAnimated:YES completion:^{
-        
-    }];
+    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 #pragma mark - 退出登录按钮事件
 - (void)buttonClick3:(UIButton*)button{
@@ -259,16 +257,6 @@ extern bool loginOrNot;
     }
     return  _avatar;
 }
-
-#pragma mark - 侧滑返回手势设置
-   
--(void)edgePan:(UIPanGestureRecognizer *)recognizer{
-    
-    [self dismissViewControllerAnimated:YES completion:^{
-        
-    }];
-}
-
 #pragma mark - 弹出提示框
 -(void)presentAlertControllerwithTitle:(NSString *)title{
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:NULL preferredStyle:UIAlertControllerStyleAlert];

@@ -1,17 +1,15 @@
 //
 //  AppDelegate.h
-//  ZhihuDaily
+//  ZhihuDailyTest
 //
-//  Created by 许晋嘉 on 2023/1/30.
+//  Created by 许晋嘉 on 2023/4/1.
 //
 
 #import <UIKit/UIKit.h>
-#import <CoreData/CoreData.h>
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
-
-
+@property(strong,nonatomic)UIWindow *window;
 
 @end
 

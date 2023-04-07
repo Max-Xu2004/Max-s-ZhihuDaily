@@ -198,20 +198,10 @@
     return _likeLabel;
 }
 
-#pragma mark - 侧滑返回手势设置
-   
--(void)edgePan:(UIPanGestureRecognizer *)recognizer{
-    
-    [self dismissViewControllerAnimated:YES completion:^{
-        
-    }];
-}
 
 #pragma mark - 返回按钮事件
 - (void)buttonClick1:(UIButton*)button{
-    [self dismissViewControllerAnimated:YES completion:^{
-        
-    }];
+    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
 #pragma mark - 点赞按钮事件
