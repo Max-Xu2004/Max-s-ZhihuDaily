@@ -10,6 +10,8 @@
 #import "Masonry.h"
 
 NSString *TableViewCellReuseIdentifier = @"TableViewCell";
+#define SCREEN_WIDTH ([UIScreen mainScreen].bounds.size.width)
+#define SCREEN_HEIGHT ([UIScreen mainScreen].bounds.size.height)
 
 #pragma mark - TableViewCell ()
 
@@ -49,7 +51,7 @@ NSString *TableViewCellReuseIdentifier = @"TableViewCell";
 
 -(UIImageView *)imgView{
     if(_imgView == nil){
-        _imgView = [[UIImageView alloc]initWithFrame:CGRectMake(self.contentView.frame.size.width-10, 10, 70, 70)];
+        _imgView = [[UIImageView alloc]initWithFrame:CGRectMake(SCREEN_WIDTH-80, 10, 70, 70)];
     }
     return _imgView;
 }
@@ -57,7 +59,7 @@ NSString *TableViewCellReuseIdentifier = @"TableViewCell";
 -(UILabel *)titleLab{
     if(_titleLab == nil){
 //        _titleLab = [[UILabel alloc] init];
-        _titleLab = [[UILabel alloc]initWithFrame:CGRectMake(15, 10, self.contentView.frame.size.width-40, 60)];
+        _titleLab = [[UILabel alloc]initWithFrame:CGRectMake(15, 10, SCREEN_WIDTH-100, 60)];
         _titleLab.font = [UIFont boldSystemFontOfSize:17];
         _titleLab.numberOfLines = 2;
     }
