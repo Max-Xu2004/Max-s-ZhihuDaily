@@ -19,6 +19,7 @@
 #import "LoginViewController.h"
 
 #define stautsBarHeight ([UIApplication sharedApplication].statusBarFrame.size.height)
+static NSString *apiPrefix= @"https://news-at.zhihu.com/api/3/stories/before/";
 
 @interface ViewController () <UITableViewDelegate,
 UITableViewDataSource,
@@ -39,9 +40,10 @@ UICollectionViewDelegateFlowLayout>
 @property (nonatomic,strong) NSDateFormatter *formatter; //8位数日期格式
 @property (nonatomic,strong) NSDateFormatter *formatter2; //"x月x日"格式
 @property (nonatomic,strong) NSLock *lock; //使用nslock使进程优先请求，避免重复请求导致历史新闻排序混乱
-@property (nonatomic,strong) UICollectionView *collectionView;
+@property (nonatomic,strong) UICollectionView *collectionView; //轮播图
 @property (nonatomic,strong) UIButton *login; //登陆的头像按钮
 @property (nonatomic,strong) NSTimer *scrollTimer; //轮播图计时器
+@property (nonatomic,strong) UIView *topView; //头视图信息显示区域
 
 
 @end
@@ -52,16 +54,20 @@ bool loginOrNot = NO; //该变量用于确认是否登陆
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.    
+    // Do any additional setup after loading the view.
+    
+//    [self addTapGesture];
+    
     self.lock = [[NSLock alloc]init]; //初始化线程锁
     [self nsDateInit]; //初始化NSDate相关变量
     [self getLatestNews]; //获取最新新闻
     [self bannerInit]; //banner初始化
-    [self.view addSubview:self.sayhi];
-    [self.view addSubview:self.monthView];
-    [self.view addSubview:self.dayView];
+    [self.view addSubview:self.topView];
+    [self.topView addSubview:self.sayhi];
+    [self.topView addSubview:self.monthView];
+    [self.topView addSubview:self.dayView];
+    [self.topView addSubview:self.login];
     [self.view addSubview:self.tableView];
-    [self.view addSubview:self.login];
     [self.login addTarget:self action:@selector(loginButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     _scrollTimer = [NSTimer scheduledTimerWithTimeInterval:3.0 target:self selector:@selector(scrollToNextPage:) userInfo:nil repeats:YES];
     [self frameInit];
@@ -120,13 +126,13 @@ bool loginOrNot = NO; //该变量用于确认是否登陆
 -(UITableView *)tableView{
     if(_tableView == nil){
         _tableView = [[UITableView alloc]init];
-//        _tableView.frame = CGRectMake(0, 100, 400, 500);//临时调试的位置
-        self.tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
-        
+        self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, stautsBarHeight+60, self.view.frame.size.width, self.view.frame.size.height-stautsBarHeight-60) style:UITableViewStyleGrouped];
         _tableView.delegate = self;
         _tableView.dataSource = self;
+        _tableView.rowHeight = 90; //写死防止排版出问题
         _tableView.estimatedSectionHeaderHeight = 0;
         _tableView.estimatedSectionFooterHeight = 0;
+        
         _tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
         _tableView.showsVerticalScrollIndicator = NO;
         _tableView.showsVerticalScrollIndicator = NO;
@@ -172,6 +178,14 @@ bool loginOrNot = NO; //该变量用于确认是否登陆
     return _login;
 }
 
+- (UIView *)topView{
+    if(!_topView){
+        _topView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 100)];
+        [self addTapGesture];
+    }
+    return _topView;
+}
+
 #pragma mark -tableViewDataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return self.newsArray[section].count;
@@ -183,7 +197,6 @@ bool loginOrNot = NO; //该变量用于确认是否登陆
 
 //创建cell
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-//    TableViewCell *cell = [[TableViewCell alloc]init];
     TableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:TableViewCellReuseIdentifier forIndexPath:indexPath];
     
     Model *model = self.newsArray[indexPath.section][indexPath.row];
@@ -214,7 +227,6 @@ bool loginOrNot = NO; //该变量用于确认是否登陆
     theDate = [self.date initWithTimeIntervalSinceNow:self.oneDay*self.counter*-1];
     NSString *dateString = [self.formatter stringFromDate:theDate];
     self.counter++;
-    NSString *apiPrefix = @"https://news-at.zhihu.com/api/3/stories/before/";
     NSString *apiString = [apiPrefix stringByAppendingString:dateString];
     
     
@@ -251,7 +263,6 @@ bool loginOrNot = NO; //该变量用于确认是否登陆
     }
     
     headerView.date = [self.formatter2 stringFromDate:[self.date initWithTimeIntervalSinceNow:self.oneDay*section*-1]];
-    NSLog(@"显示日期为%@",headerView.date);
     return headerView;
 }
 
@@ -380,12 +391,12 @@ bool loginOrNot = NO; //该变量用于确认是否登陆
             make.height.mas_equalTo(20);
     }];
     //设置tableView的位置
-    [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.top.equalTo(self.view).mas_offset(stautsBarHeight+60);
-        make.bottom.equalTo(self.view).mas_offset(0);
-        make.left.equalTo(self.view).mas_offset(0);
-        make.right.equalTo(self.view).mas_offset(0);
-    }];
+//    [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+//                make.top.equalTo(self.view).mas_offset(stautsBarHeight+60);
+//        make.bottom.equalTo(self.view).mas_offset(0);
+//        make.left.equalTo(self.view).mas_offset(0);
+//        make.right.equalTo(self.view).mas_offset(0);
+//    }];
     //设置login按钮的位置
     [self.login mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view).mas_offset(stautsBarHeight+5);
@@ -429,6 +440,19 @@ bool loginOrNot = NO; //该变量用于确认是否登陆
     else if (hour>12&&hour<18) return @"知乎日报";
     else if (hour>=18&&hour<23) return @"晚上好！";
     else return @"早点休息";
+}
+
+#pragma mark -轻点顶部返回
+- (void)addTapGesture{
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapAction)];
+    tap.numberOfTouchesRequired = 1;
+    tap.numberOfTapsRequired = 1;
+    [self.topView addGestureRecognizer:tap];
+}
+
+-(void)tapAction{
+    [self.tableView setContentOffset:CGPointMake(0, 0) animated:YES];
+    NSLog(@"111");
 }
 
 @end

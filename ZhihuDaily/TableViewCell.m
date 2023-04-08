@@ -32,46 +32,32 @@ NSString *TableViewCellReuseIdentifier = @"TableViewCell";
     }
     return self;
 }
-#pragma mark - 设置大小
+#pragma mark - 计算titleLab行数并设置hintLab位置使二者紧贴
 - (void)layoutIfNeeded{
-
-
-//设置新闻图片位置
-    [self.imgView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.contentView).mas_offset(10);
-        make.bottom.equalTo(self.contentView).mas_offset(-10);
-        make.right.equalTo(self.contentView).mas_offset(-15);
-        make.width.mas_equalTo(70);
-        make.height.mas_equalTo(70);
-    }];
-//设置新闻标题位置
-    [self.titleLab mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.contentView).mas_offset(10);
-        make.bottom.equalTo(self.hintLab).mas_offset(-20);
-        make.left.equalTo(self.contentView).mas_offset(15);
-        make.right.equalTo(self.imgView).mas_offset(-80);
-    }];
-//设置作者名、阅读时间位置
-    [self.hintLab mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.contentView).mas_offset(-10);
-        make.left.equalTo(self.contentView).mas_offset(15);
-        make.right.equalTo(self.imgView).mas_offset(-80);
-        make.height.mas_equalTo(12);
-    }];
+    if([self.titleLab.text length]/16 == 0){
+        self.hintLab.frame = CGRectMake(15, 55.5, self.titleLab.frame.size.width, 12);
+    }
+    else if ([self.titleLab.text length]/16 == 1 &&[self.titleLab.text length]%16 == 0){
+        self.hintLab.frame = CGRectMake(15, 55.5, self.titleLab.frame.size.width, 12);
+    }
+    else{
+        self.hintLab.frame = CGRectMake(15, 66.5, self.titleLab.frame.size.width, 12);
+    }
 }
 
 #pragma mark - 懒加载
 
 -(UIImageView *)imgView{
     if(_imgView == nil){
-        _imgView = [[UIImageView alloc]init];
+        _imgView = [[UIImageView alloc]initWithFrame:CGRectMake(self.contentView.frame.size.width-10, 10, 70, 70)];
     }
     return _imgView;
 }
 
 -(UILabel *)titleLab{
     if(_titleLab == nil){
-        _titleLab = [[UILabel alloc]init];
+//        _titleLab = [[UILabel alloc] init];
+        _titleLab = [[UILabel alloc]initWithFrame:CGRectMake(15, 10, self.contentView.frame.size.width-40, 60)];
         _titleLab.font = [UIFont boldSystemFontOfSize:17];
         _titleLab.numberOfLines = 2;
     }
